@@ -1,4 +1,4 @@
-Frontend Renters management software. Developed with [Next.js](https://nextjs.org/).
+Renters Management Software. Developed with [Next.js](https://nextjs.org/).
 
 ## Getting Started
 
