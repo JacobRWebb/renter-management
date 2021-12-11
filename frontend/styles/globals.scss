@@ -1,3 +1,33 @@
+$border-radius-heavy: 10px;
+$border-radius-light: 2px;
+$border-radius: 5px;
+
+$color-blue: #05386b;
+$color-green-dark: #379683;
+$color-green: #5cdb95;
+$color-green-light: #8ee4af;
+$color-cream: #edf5e1;
+
 * {
   box-sizing: border-box;
+  margin: unset;
+  padding: unset;
+}
+
+body {
+  background: $color-cream;
+}
+
+button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  margin: unset;
+  padding: unset;
+  text-align: inherit;
+  text-decoration: none;
+  appearance: none;
 }

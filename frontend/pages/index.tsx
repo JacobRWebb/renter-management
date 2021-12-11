@@ -1,7 +1,12 @@
-import type { NextPage } from 'next'
+import type { NextPage } from "next";
+import Navbar from "../components/navbar";
 
 const Index: NextPage = () => {
-  return <div></div>
-}
+  return (
+    <div className="page">
+      <Navbar />
+    </div>
+  );
+};
 
-export default Index
+export default Index;
