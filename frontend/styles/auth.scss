@@ -1,0 +1,85 @@
+.authBase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: 100vw;
+}
+
+.authContainer {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: $border-radius;
+  // box-shadow: 2px 2px 5px $color-cream;
+  color: $color-blue;
+  padding: 2rem 4rem;
+  width: 80%;
+  min-width: 280px;
+  max-width: 500px;
+  transform: translateY(-10vh);
+  overflow: hidden;
+  user-select: none;
+
+  > * {
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: unset;
+    }
+  }
+}
+
+.authHeader {
+  margin-bottom: 2rem;
+}
+
+.authLabel {
+  font-size: 1.3rem;
+  margin-bottom: 5px;
+  width: fit-content;
+}
+
+.authInput {
+  padding: 8px 16px;
+  border-radius: $border-radius;
+  border: 2px solid rgb(60, 66, 87);
+  font-size: 1rem;
+  color: $color-blue;
+  width: 100%;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.passwordHiddenBtn {
+  min-width: 50px;
+}
+
+.authGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.signinBtn {
+  margin-top: 2rem;
+  margin-left: auto;
+  padding: 10px;
+  border-radius: $border-radius;
+  border: 2px solid rgb(60, 66, 87);
+  background: $color-blue;
+  color: $color-cream;
+}
+
+@keyframes testing {
+  0% {
+    transform: translateX(-100vw);
+  }
+  100% {
+    transform: unset;
+  }
+}

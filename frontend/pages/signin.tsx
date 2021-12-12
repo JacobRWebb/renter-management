@@ -1,9 +1,12 @@
 import { NextPage } from "next";
+import Signin from "../components/form/Signin";
+import Navbar from "../components/navbar";
 
 const signin: NextPage = () => {
   return (
-    <div>
-      <h1>Signin</h1>
+    <div className="page">
+      <Navbar />
+      <Signin />
     </div>
   );
 };

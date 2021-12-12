@@ -1,8 +1,13 @@
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 import type { AppProps } from "next/app";
-import CanvasGradient from "../components/navbar/CanvasGradient";
+import CanvasGradient from "../components/CanvasGradient";
+import { wrapper } from "../store/";
 import "../styles/index.scss";
 
-function MyApp({ Component, pageProps }: AppProps) {
+library.add(fas);
+
+function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <CanvasGradient />
@@ -11,4 +16,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default wrapper.withRedux(App);

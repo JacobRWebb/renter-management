@@ -16,6 +16,8 @@ $color-cream: #edf5e1;
 
 body {
   background: $color-cream;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 button {

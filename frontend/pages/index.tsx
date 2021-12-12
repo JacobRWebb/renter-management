@@ -3,9 +3,14 @@ import Navbar from "../components/navbar";
 
 const Index: NextPage = () => {
   return (
-    <div className="page">
-      <Navbar />
-    </div>
+    <>
+      <div className="page">
+        <Navbar />
+      </div>
+      <div className="footer">
+        <p>Xodius INC Copyright </p>
+      </div>
+    </>
   );
 };
 
