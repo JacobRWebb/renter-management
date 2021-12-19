@@ -13,6 +13,11 @@ function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>Welcome Renter</title>
+        <meta name="theme-color" content="#379683" />
+        <meta
+          name="description"
+          content="User friendly portal for managing everything renters"
+        />
       </Head>
       <CanvasGradient />
       <Component {...pageProps} />
