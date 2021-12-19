@@ -1,0 +1,14 @@
+.notFoundPage {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+
+  text-align: center;
+  color: $color-cream;
+  * {
+    cursor: pointer;
+  }
+}
