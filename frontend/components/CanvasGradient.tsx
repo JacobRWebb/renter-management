@@ -1,21 +1,22 @@
-import Script from "next/script";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useRef } from "react";
+import * as Gradient from "../public/Gradient";
+
 const CanvasGradient: FunctionComponent = () => {
-  return (
-    <>
-      <canvas id="gradient-canvas"></canvas>
-      <Script src="/Gradient.js" strategy="beforeInteractive" />
-      <Script
-        strategy="lazyOnload"
-        dangerouslySetInnerHTML={{
-          __html: `
-            var gradient = new Gradient();
-            gradient.initGradient('#gradient-canvas');
-          `,
-        }}
-      />
-    </>
-  );
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const gradient = new Gradient.Gradient();
+    if (canvasRef.current) {
+      gradient.el = canvasRef.current;
+      gradient.connect();
+    }
+
+    return () => {
+      gradient.disconnect();
+    };
+  }, []);
+
+  return <canvas id="gradient-canvas" ref={canvasRef}></canvas>;
 };
 
 export default CanvasGradient;

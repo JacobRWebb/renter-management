@@ -1,4 +1,4 @@
-import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 
 export interface IUser {
@@ -17,22 +17,22 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: defaultAuthState,
   reducers: {
-    setUser: (state: Draft<IAuthState>, action: PayloadAction<IUser>) => {
-      state.user = action.payload;
-    },
-  },
-  extraReducers: {
-    [HYDRATE]: (
-      state: Draft<IAuthState>,
-      action: PayloadAction<IAuthState>
-    ) => {
-      console.log(state);
-      console.log(action);
+    setUser: (state, action: PayloadAction<IUser>) => {
       return {
-        ...state,
-        ...action.payload,
+        ...current(state),
+        user: {
+          ...action.payload,
+        },
       };
     },
+  },
+  extraReducers: (builder) => {
+    return builder.addCase(HYDRATE, (state, action: any) => {
+      return {
+        ...current(state),
+        ...action.payload["auth"],
+      };
+    });
   },
 });
 
