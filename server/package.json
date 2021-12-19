@@ -7,6 +7,7 @@
     "dev": "tsc-watch --onSuccess \"node dist/index.js\""
   },
   "dependencies": {
+    "@prisma/client": "^3.6.0",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "prisma": "^3.6.0",
