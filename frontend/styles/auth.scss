@@ -23,7 +23,7 @@
   user-select: none;
 
   > * {
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
 
     &:last-child {
       margin-bottom: unset;
@@ -33,7 +33,7 @@
 
 .authHeader {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .authLabel {
@@ -52,7 +52,7 @@
 }
 
 .signinBtn {
-  margin-top: 2rem;
+  margin-top: 1rem;
   margin-left: auto;
   padding: 10px;
   border-radius: $border-radius;
@@ -62,9 +62,9 @@
 }
 
 .showPassword {
-  background: rgb(199, 197, 197);
+  cursor: pointer;
   &:hover {
-    cursor: pointer;
+    background: rgba($color-blue, 0.1);
   }
 }
 

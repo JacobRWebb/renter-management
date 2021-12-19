@@ -45,7 +45,6 @@ const SigninForm: FunctionComponent = () => {
           onChangeCallback={(e) => {
             setUsername(e.target.value);
           }}
-          Icon={<FontAwesomeIcon icon="user" className="inputIcon" />}
         />
         <AuthFormGroup
           htmlFor="password"
