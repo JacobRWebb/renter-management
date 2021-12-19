@@ -27,9 +27,8 @@ const Signin: FunctionComponent = () => {
     }
   }, [authState]);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(username, password);
     dispatch(authSlice.actions.setUser({ username }));
   };
 
@@ -37,6 +36,7 @@ const Signin: FunctionComponent = () => {
     <div className="authBase">
       <form className="authContainer" onSubmit={onSubmit}>
         <h1 className="authHeader">Sign in to your account</h1>
+
         <AuthFormGroup
           htmlFor="username"
           label="Username"
@@ -45,7 +45,8 @@ const Signin: FunctionComponent = () => {
           onChangeCallback={(e) => {
             setUsername(e.target.value);
           }}
-        ></AuthFormGroup>
+          Icon={<FontAwesomeIcon icon="user" className="inputIcon" />}
+        />
         <AuthFormGroup
           htmlFor="password"
           label="Password"
@@ -55,15 +56,17 @@ const Signin: FunctionComponent = () => {
           onChangeCallback={(e) => {
             setPassword(e.target.value);
           }}
-        >
-          <FontAwesomeIcon
-            onClick={() => {
-              setPasswordHidden(!passwordHidden);
-            }}
-            className="passwordHiddenBtn"
-            icon={passwordHidden ? "eye" : "eye-slash"}
-          />
-        </AuthFormGroup>
+          Icon={
+            <FontAwesomeIcon
+              focusable="true"
+              onClick={() => {
+                setPasswordHidden(!passwordHidden);
+              }}
+              className="inputIcon showPassword"
+              icon={passwordHidden ? "eye" : "eye-slash"}
+            />
+          }
+        />
         <button className="signinBtn">Sign in</button>
       </form>
     </div>

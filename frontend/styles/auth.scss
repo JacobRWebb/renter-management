@@ -32,6 +32,7 @@
 }
 
 .authHeader {
+  text-align: center;
   margin-bottom: 2rem;
 }
 
@@ -39,21 +40,6 @@
   font-size: 1.3rem;
   margin-bottom: 5px;
   width: fit-content;
-}
-
-.authInput {
-  padding: 8px 16px;
-  border-radius: $border-radius;
-  border: 2px solid rgb(60, 66, 87);
-  font-size: 1rem;
-  color: $color-blue;
-  width: 100%;
-}
-
-.inputGroup {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 
 .passwordHiddenBtn {
@@ -73,6 +59,12 @@
   border: 2px solid rgb(60, 66, 87);
   background: $color-blue;
   color: $color-cream;
+}
+
+.showPassword {
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 @keyframes testing {

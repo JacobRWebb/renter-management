@@ -1,12 +1,13 @@
-import { ChangeEvent, FunctionComponent } from "react";
+import { ChangeEvent, FunctionComponent, ReactNode } from "react";
 
 const AuthFormGroup: FunctionComponent<{
   label: string;
   htmlFor: string;
   value: string;
   onChangeCallback: (e: ChangeEvent<HTMLInputElement>) => void;
-  autoComplete?: string | undefined;
+  autoComplete?: string;
   passwordHidden?: boolean;
+  Icon?: ReactNode;
 }> = ({
   label,
   htmlFor,
@@ -14,14 +15,14 @@ const AuthFormGroup: FunctionComponent<{
   onChangeCallback,
   autoComplete = "",
   passwordHidden = false,
-  children,
+  Icon,
 }) => {
   return (
-    <div className="authGroup">
+    <>
       <label className="authLabel" htmlFor={htmlFor}>
         {label}
       </label>
-      <div className="inputGroup">
+      <div className="inputContainer">
         <input
           id={htmlFor}
           className="authInput"
@@ -30,9 +31,9 @@ const AuthFormGroup: FunctionComponent<{
           value={value}
           onChange={onChangeCallback}
         />
-        {children}
+        {Icon}
       </div>
-    </div>
+    </>
   );
 };
 
