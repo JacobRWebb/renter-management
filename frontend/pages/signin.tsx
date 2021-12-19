@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import Signin from "../components/form/Signin";
+import SigninForm from "../components/form/SigninForm";
 import Navbar from "../components/navbar";
 import { wrapper } from "../store";
 
@@ -7,7 +7,7 @@ const signin: NextPage = () => {
   return (
     <div className="page">
       <Navbar />
-      <Signin />
+      <SigninForm />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { useAppSelector } from "../../store";
 import { authSlice } from "../../store/authSlice";
 import AuthFormGroup from "./AuthFormGroup";
 
-const Signin: FunctionComponent = () => {
+const SigninForm: FunctionComponent = () => {
   const dispatch = useDispatch();
   const authState = useAppSelector((state) => state.auth);
   const router = useRouter();
@@ -73,4 +73,4 @@ const Signin: FunctionComponent = () => {
   );
 };
 
-export default Signin;
+export default SigninForm;
