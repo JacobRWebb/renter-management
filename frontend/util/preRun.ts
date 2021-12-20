@@ -6,8 +6,8 @@ export const checkToken = async (store: EnhancedStore, token: string) => {
   try {
     const response = await axiosInstance.post("user/token", { token });
     if (response.data.success) {
-      const { id, username } = response.data;
-      store.dispatch(authSlice.actions.setUser({ id, username }));
+      delete response.data.success;
+      store.dispatch(authSlice.actions.setUser(response.data));
     }
   } catch (error) {}
 };

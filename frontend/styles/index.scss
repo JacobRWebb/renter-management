@@ -1,6 +1,7 @@
 @import "globals.scss";
 @import "navbar.scss";
 @import "auth.scss";
+@import "dashboard.scss";
 @import "customErrorPage.scss";
 
 .page {
@@ -59,5 +60,66 @@
     width: 34px;
     height: 100%;
     padding: 0.5rem;
+  }
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.splashCard {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  background-color: $color-cream;
+  padding: 1rem;
+  border-radius: $border-radius;
+  color: $color-blue;
+  box-shadow: 0 0 20px 5px $color-cream;
+  overflow: hidden;
+}
+
+.splashWordsContainer {
+  display: flex;
+  color: $color-green-dark;
+}
+
+.saying {
+  display: none;
+  font-size: 2rem;
+}
+
+.currentSaying {
+  display: flex;
+  animation: splashCurrentUp 0.5s ease-in-out forwards;
+  margin-right: 0.7rem;
+}
+
+.lastSaying {
+  animation: splashLastSaying 0.5s ease-in-out forwards;
+}
+
+@keyframes splashCurrentUp {
+  0% {
+    transform: translateY(100vh);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes splashLastSaying {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-50vh);
+  }
+  100% {
+    display: none;
+    transform: translateY(-100vh);
   }
 }

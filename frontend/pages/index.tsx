@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Navbar from "../components/navbar";
+import SplashCard from "../components/SplashCard";
 import { wrapper } from "../store";
 import { checkToken } from "../util/preRun";
 
@@ -8,6 +9,9 @@ const Index: NextPage = () => {
     <>
       <div className="page">
         <Navbar />
+        <div className="content">
+          <SplashCard />
+        </div>
       </div>
       <div className="footer">
         <p>Xodius INC Copyright </p>

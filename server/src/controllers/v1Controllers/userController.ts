@@ -50,7 +50,19 @@ const userController = {
       throw new Error("Invalid token");
     }
 
-    const user = await prisma.user.findFirst({ where: { id: decode.id } });
+    const user = await prisma.user.findFirst({
+      where: { id: decode.id },
+      select: {
+        id: true,
+        username: true,
+        roles: true,
+        email: true,
+        createdAt: true,
+        ownedProperty: true,
+        rentedProperty: true,
+        workedProperty: true,
+      },
+    });
 
     if (!user) {
       throw new Error("User not found");
@@ -58,8 +70,7 @@ const userController = {
 
     return {
       success: true,
-      id: user.id,
-      username: user.username,
+      user,
     };
   },
 };

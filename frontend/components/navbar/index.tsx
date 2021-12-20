@@ -37,7 +37,8 @@ const Navbar: FunctionComponent = () => {
       >
         Xodius
       </h1>
-      {!authPage && (
+      {state.auth.user && <button>{state.auth.user.username}</button>}
+      {!authPage && !state.auth.user && (
         <button
           className="signin"
           onMouseOver={() => router.prefetch("/signin")}

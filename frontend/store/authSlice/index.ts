@@ -1,9 +1,33 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 
+export enum Role {
+  OWNER = "OWNER",
+  ADMIN = "ADMIN",
+  USER = "USER",
+  TECHNICIAN = "TECHNICIAN",
+}
+
+export interface IProperty {
+  id: string;
+  name: string;
+  description: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  ownerId: string;
+}
+
 export interface IUser {
   id: string;
   username: string;
+  roles: Role[];
+  email: string;
+  createdAt: string;
+  ownedProperty: IProperty[];
+  rentedProperty: IProperty[];
+  workedProperty: IProperty[];
 }
 
 export interface IAuthState {
@@ -23,9 +47,7 @@ export const authSlice = createSlice({
     setUser: (state, action: PayloadAction<IUser>) => {
       return {
         ...current(state),
-        user: {
-          ...action.payload,
-        },
+        ...action.payload,
       };
     },
     setError: (state, action: PayloadAction<string>) => {
