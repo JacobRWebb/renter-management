@@ -37,7 +37,17 @@ const Navbar: FunctionComponent = () => {
       >
         Xodius
       </h1>
-      {state.auth.user && <button>{state.auth.user.username}</button>}
+      {state.auth.user && (
+        <button
+          onClick={() => {
+            if (window.location.pathname !== "/dashboard") {
+              router.push("/dashboard");
+            }
+          }}
+        >
+          {state.auth.user.username}
+        </button>
+      )}
       {!authPage && !state.auth.user && (
         <button
           className="signin"

@@ -1,5 +1,9 @@
 {
+  "scripts": {
+    "dev": "concurrently \"yarn --cwd ./server dev\" \"yarn --cwd ./frontend dev\""
+  },
   "dependencies": {
+    "concurrently": "^6.5.1",
     "cookie-parser": "^1.4.6"
   },
   "devDependencies": {

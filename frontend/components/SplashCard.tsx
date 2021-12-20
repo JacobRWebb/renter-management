@@ -28,6 +28,7 @@ const SplashCard: FunctionComponent = () => {
         {splashWords.map((word, index) => {
           return (
             <span
+              key={index}
               className={`saying ${
                 currentSaying === word
                   ? "currentSaying"

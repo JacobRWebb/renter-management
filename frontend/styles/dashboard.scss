@@ -9,7 +9,12 @@
 .ownedProperties {
   width: 100%;
   background: rgba($color-cream, 0.4);
+  border: 2px solid $color-cream;
   border-radius: $border-radius;
+}
+
+.propertiesHeader {
+  padding: 1rem;
 }
 
 .property {
@@ -18,5 +23,4 @@
   padding: 1rem;
   width: 100%;
   background: $color-cream;
-  border-radius: $border-radius;
 }

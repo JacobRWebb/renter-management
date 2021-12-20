@@ -31,7 +31,7 @@ const Dashboard: NextPage<{ test: boolean }> = ({}) => {
       <div className="dashboard">
         {user.roles.includes(Role.OWNER) && (
           <div className="ownedProperties">
-            <h1>Owned Properties</h1>
+            <h1 className="propertiesHeader">Owned Properties</h1>
             {user.ownedProperty.map((property, index) => {
               return (
                 <div className="property" key={index}>
