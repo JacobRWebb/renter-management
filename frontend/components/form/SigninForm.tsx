@@ -4,6 +4,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../store";
 import { authSlice } from "../../store/authSlice";
+import { axiosInstance } from "../../util/constants";
 import AuthFormGroup from "./AuthFormGroup";
 
 const SigninForm: FunctionComponent = () => {
@@ -29,7 +30,17 @@ const SigninForm: FunctionComponent = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(authSlice.actions.setUser({ username }));
+    axiosInstance
+      .post("user/login", { username, password })
+      .then((res) => {
+        if (res.data.success) {
+        } else {
+          dispatch(authSlice.actions.setError(res.data.error));
+        }
+      })
+      .catch((err) => {
+        dispatch(authSlice.actions.setError("Network Error"));
+      });
   };
 
   return (
@@ -67,6 +78,7 @@ const SigninForm: FunctionComponent = () => {
           }
         />
         <button className="signinBtn">Sign in</button>
+        {authState.error && <p>{authState.error}</p>}
       </form>
     </div>
   );

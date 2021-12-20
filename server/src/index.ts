@@ -11,8 +11,17 @@ const app = express();
 const server = createServer(app);
 
 const port = process.env.PORT || 5000;
+let domain =
+  process.env.NODE_ENV === "production"
+    ? "https://www.xodius.io"
+    : `http://localhost:3000`;
+app.use(
+  cors({
+    credentials: true,
+    origin: domain,
+  })
+);
 
-app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

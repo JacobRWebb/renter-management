@@ -7,10 +7,12 @@ export interface IUser {
 
 export interface IAuthState {
   user: IUser | null;
+  error: string | null;
 }
 
 const defaultAuthState: IAuthState = {
   user: null,
+  error: null,
 };
 
 export const authSlice = createSlice({
@@ -23,6 +25,12 @@ export const authSlice = createSlice({
         user: {
           ...action.payload,
         },
+      };
+    },
+    setError: (state, action: PayloadAction<string>) => {
+      return {
+        ...current(state),
+        error: action.payload,
       };
     },
   },

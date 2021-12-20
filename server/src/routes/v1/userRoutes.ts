@@ -10,7 +10,14 @@ router.post("/login", async (req, res) => {
       username,
       password
     );
-    res.cookie("token", response.token).json({ success: true });
+    res
+      .cookie("token", response.token, {
+        httpOnly: true,
+        maxAge: 12 * 24 * 60 * 10,
+        secure: false,
+        domain: "localhost",
+      })
+      .json({ success: true });
   } catch (e) {
     res.json({
       success: false,
