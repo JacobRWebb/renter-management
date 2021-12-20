@@ -34,6 +34,7 @@ const SigninForm: FunctionComponent = () => {
       .post("user/login", { username, password })
       .then((res) => {
         if (res.data.success) {
+          router.push("/dashboard");
         } else {
           dispatch(authSlice.actions.setError(res.data.error));
         }
