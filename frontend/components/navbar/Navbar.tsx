@@ -10,10 +10,6 @@ const Navbar: FunctionComponent = () => {
   const [menuItems, setMenuItems] = useState<ReactNode[]>([]);
 
   useEffect(() => {
-    console.log("Change");
-  }, [store.auth.user]);
-
-  useEffect(() => {
     const items: ReactNode[] = determineMenuItems();
     if (items.length !== menuItems.length) {
       setMenuItems(items);
