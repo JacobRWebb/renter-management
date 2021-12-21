@@ -11,10 +11,13 @@ const Navbar: FunctionComponent = () => {
 
   useEffect(() => {
     const items: ReactNode[] = determineMenuItems();
-    if (items.length !== menuItems.length) {
-      setMenuItems(items);
-    }
-  });
+    setMenuItems(items);
+  }, [store.auth.user]);
+
+  useEffect(() => {
+    const items: ReactNode[] = determineMenuItems();
+    setMenuItems(items);
+  }, []);
 
   const determineMenuItems = (): ReactNode[] => {
     if (store.auth.user) {

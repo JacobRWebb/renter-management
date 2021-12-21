@@ -4,9 +4,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import AuthFormGroup from "../components/form/AuthFormGroup";
-import { useAppSelector } from "../store";
+import { useAppSelector, wrapper } from "../store";
 import { authSlice } from "../store/authSlice";
 import { axiosInstance } from "../util/constants";
+import { checkToken } from "../util/preRun";
 
 const Signup: NextPage = () => {
   const dispatch = useDispatch();
@@ -72,5 +73,27 @@ const Signup: NextPage = () => {
     </div>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => {
+  return async (ctx) => {
+    const token = ctx.req.cookies.token;
+    if (token) {
+      await checkToken(store, token);
+    }
+
+    if (store.getState().auth.user) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
+
+    return {
+      props: {},
+    };
+  };
+});
 
 export default Signup;
