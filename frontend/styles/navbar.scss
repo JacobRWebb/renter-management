@@ -1,61 +1,79 @@
-.navbar {
+$navbar-height: 80px;
+
+.nav-primary {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  flex-direction: row;
+  padding: 1rem;
   width: 100%;
-  padding: 1rem 2rem;
-}
-
-.logo {
-  font-size: 2rem;
-  transition: all 1s;
-  cursor: pointer;
-  color: $color-cream;
-  user-select: none;
-}
-
-button.signin {
-  user-select: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
-  padding: 3px 13px;
-  font-size: 1.2rem;
-  // font-weight: 600;
-  width: fit-content;
-  border-radius: 20px;
-  border: 2px solid $color-cream;
-  color: $color-cream;
-  transition: all 1s ease;
-  cursor: pointer;
+  height: $navbar-height;
+  min-height: $navbar-height;
+  max-height: $navbar-height;
 
   * {
-    cursor: pointer;
-    transition: all 0.8s ease;
+    user-select: none;
   }
+}
 
-  .signinArrow {
-    position: absolute;
-    display: flex;
-    width: 20px;
-    right: 0;
-    transform: translateX(150%);
+.nav-primary__title {
+  cursor: pointer;
+  color: $color-cream;
+  user-select: none;
+}
+
+.nav-primary__menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-primary__menu__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+  cursor: pointer;
+  color: $color-cream;
+  height: 100%;
+}
+
+.nav-primary__menu__signin {
+  align-items: center;
+  border: 2px solid $color-cream;
+  border-radius: 20px;
+  color: $color-cream;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  padding: 3px 13px;
+  font-size: 1.2rem;
+
+  &,
+  * {
+    cursor: pointer;
+    transition: all 0.4s ease;
   }
 
   &:hover {
-    .signinText {
-      margin-right: 15px;
+    .nav-primary__menu__signin-text {
+      margin-right: 1rem;
     }
-    .signinArrow {
-      transform: unset;
+    .nav-primary__menu__signin-arrow {
+      transform: translateX(0);
       right: 5px;
     }
   }
 }
 
-@media screen and (min-width: 768px) {
+.nav-primary__menu__signin-arrow {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: absolute;
+  overflow: hidden;
+  right: 0;
+  transform: translateX(100%);
 }

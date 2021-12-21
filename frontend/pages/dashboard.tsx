@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import Navbar from "../components/navbar";
 import { useAppSelector, wrapper } from "../store";
 import { Role } from "../store/authSlice";
 import { checkToken } from "../util/preRun";
@@ -27,7 +26,6 @@ const Dashboard: NextPage<{ test: boolean }> = ({}) => {
 
   return (
     <div className="page">
-      <Navbar />
       <div className="dashboard">
         {user.roles.includes(Role.OWNER) && (
           <div className="ownedProperties">

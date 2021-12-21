@@ -19,8 +19,6 @@ $text-color: #3c4257;
 
 body {
   background: $color-cream;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
 button {
@@ -35,4 +33,21 @@ button {
   text-align: inherit;
   text-decoration: none;
   appearance: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  z-index: 99;
+}
+
+::-webkit-scrollbar-track {
+  background: #6d6d6d2c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $color-blue;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $color-green-light;
 }

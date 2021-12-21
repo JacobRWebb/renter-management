@@ -1,7 +1,7 @@
 import { FunctionComponent, useEffect, useRef } from "react";
 import * as Gradient from "../util/Gradient";
 
-const CanvasGradient: FunctionComponent = () => {
+const Background: FunctionComponent = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -19,4 +19,4 @@ const CanvasGradient: FunctionComponent = () => {
   return <canvas id="gradient-canvas" ref={canvasRef}></canvas>;
 };
 
-export default CanvasGradient;
+export default Background;

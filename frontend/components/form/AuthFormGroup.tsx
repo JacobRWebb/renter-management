@@ -1,39 +1,29 @@
-import { ChangeEvent, FunctionComponent, ReactNode } from "react";
+import {
+  DetailedHTMLProps,
+  FunctionComponent,
+  InputHTMLAttributes,
+  ReactNode,
+} from "react";
 
-const AuthFormGroup: FunctionComponent<{
-  label: string;
-  htmlFor: string;
-  value: string;
-  onChangeCallback: (e: ChangeEvent<HTMLInputElement>) => void;
-  autoComplete?: string;
-  passwordHidden?: boolean;
-  Icon?: ReactNode;
-}> = ({
-  label,
-  htmlFor,
-  value,
-  onChangeCallback,
-  autoComplete = "",
-  passwordHidden = false,
-  Icon,
-}) => {
+const AuthFormGroup: FunctionComponent<
+  Partial<
+    DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+  > & {
+    label: string;
+    Icon?: ReactNode;
+  }
+> = ({ label, id, Icon, ...inputProps }) => {
   return (
-    <>
-      <label className="authLabel" htmlFor={htmlFor}>
+    <div className="input-group">
+      <label className="input-label" htmlFor={id}>
         {label}
       </label>
-      <div className="inputContainer">
-        <input
-          id={htmlFor}
-          className="authInput"
-          type={passwordHidden ? "password" : "text"}
-          autoComplete={autoComplete}
-          value={value}
-          onChange={onChangeCallback}
-        />
+
+      <div className="input-field">
+        <input autoComplete={id} {...inputProps} />
         {Icon}
       </div>
-    </>
+    </div>
   );
 };
 
