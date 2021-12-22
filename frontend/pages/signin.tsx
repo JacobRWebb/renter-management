@@ -68,7 +68,13 @@ const Signup: NextPage = () => {
           }
         />
         <button className="submit-btn">Signin</button>
-        {authState.error && <p>{authState.error}</p>}
+        {authState.error && <p className="error-message">{authState.error}</p>}
+        <p
+          className="page-signin__no-account"
+          onClick={() => router.push("/signup")}
+        >
+          Don't have an account?
+        </p>
       </form>
     </div>
   );
