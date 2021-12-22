@@ -10,7 +10,6 @@ const Dashboard: NextPage<{ test: boolean }> = ({}) => {
   const dispatch = useDispatch();
   const authState = useAppSelector((state) => state.auth);
   const router = useRouter();
-  console.log();
 
   useEffect(() => {
     if (!authState.user) {
