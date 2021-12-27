@@ -1,3 +1,2 @@
-import v1Controllers from "./v1Controllers";
-
-export { v1Controllers };
+export * as stripeController from "./stripeController";
+export * as userController from "./userController";

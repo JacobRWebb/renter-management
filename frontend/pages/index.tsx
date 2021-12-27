@@ -1,11 +1,12 @@
 import type { NextPage } from "next";
+import { Navbar } from "../components/navbar";
 import { wrapper } from "../store";
 import { checkToken } from "../util/preRun";
 
 const Index: NextPage = () => {
   return (
     <>
-      <p>Homepage Placeholder</p>
+      <Navbar />
     </>
   );
 };

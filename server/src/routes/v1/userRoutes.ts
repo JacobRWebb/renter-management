@@ -1,21 +1,21 @@
 import { Router } from "express";
-import { v1Controllers } from "../../controllers";
+import { userController } from "../../controllers";
+import { authorizedAsync } from "../../middleware";
 
 const router = Router();
 
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   try {
-    const response = await v1Controllers.userController.login(
-      username,
-      password
-    );
+    const response = await userController.login(email, password);
+
     res
       .cookie("token", response.token, {
         httpOnly: true,
-        maxAge: 12 * 24 * 60 * 10,
-        secure: false,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+        maxAge: 1000 * 60 * 60 * 24 * 7,
         domain: "localhost",
+        sameSite: "strict",
       })
       .json({ success: true });
   } catch (e) {
@@ -26,14 +26,11 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/token", async (req, res) => {
-  const { token } = req.body;
-  try {
-    const response = await v1Controllers.userController.token(token);
-    return res.json(response);
-  } catch (e) {
-    return res.json({ success: false, error: e.message });
-  }
+router.post("/preFetchUser", authorizedAsync, async (_req, res) => {
+  return res.json({
+    success: true,
+    user: res.locals.user,
+  });
 });
 
 router.get("/", (_req, res) => {

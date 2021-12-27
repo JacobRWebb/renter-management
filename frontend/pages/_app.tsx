@@ -3,7 +3,6 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Background from "../components/Background";
-import { Navbar } from "../components/navbar";
 import { wrapper } from "../store/";
 import "../styles/index.scss";
 
@@ -11,7 +10,8 @@ library.add(fas);
 
 function App({ Component, pageProps }: AppProps) {
   return (
-    <div className="page">
+    <>
+      <Background />
       <Head>
         <title>Welcome to Xodius</title>
         <meta name="theme-color" content="#379683" />
@@ -20,10 +20,10 @@ function App({ Component, pageProps }: AppProps) {
           content="User friendly portal for managing everything renters"
         />
       </Head>
-      <Navbar />
-      <Component {...pageProps} />
-      <Background />
-    </div>
+      <div className="h-screen appearance-none">
+        <Component {...pageProps} />
+      </div>
+    </>
   );
 }
 

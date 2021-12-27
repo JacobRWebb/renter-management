@@ -1,3 +1,4 @@
+import { loadStripe } from "@stripe/stripe-js";
 import axios, { AxiosInstance } from "axios";
 
 export const isProd = process.env.NODE_ENV === "production";
@@ -12,3 +13,7 @@ export const axiosInstance: AxiosInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+export const stripePromise = loadStripe(
+  "pk_test_51K5bhmDyU6fCOjvWZYLBePQT0Pnl230fuQZ76u1whiS8pHqaamXiAxntkRhBTZWhE4a4hLC0AYQRjK2QcuHRV1Xz00tmIQa0HM"
+);

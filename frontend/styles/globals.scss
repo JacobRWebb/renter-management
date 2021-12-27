@@ -1,6 +1,6 @@
-$border-radius-heavy: 10px;
-$border-radius-light: 2px;
-$border-radius: 5px;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 $color-blue: #05386b;
 $color-green-dark: #379683;
@@ -8,6 +8,16 @@ $color-green: #5cdb95;
 $color-green-light: #8ee4af;
 $color-cream: #edf5e1;
 $text-color: #3c4257;
+
+$sm-breakpoint: "640px";
+$md-breakpoint: "768px";
+$lg-breakpoint: "1024px";
+$xl-breakpoint: "1280px";
+
+body {
+  background: black;
+  overflow: hidden;
+}
 
 * {
   box-sizing: border-box;
@@ -17,31 +27,13 @@ $text-color: #3c4257;
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
 }
 
-body {
-  background: $color-cream;
-}
-
-button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: inherit;
-  font-weight: inherit;
-  line-height: inherit;
-  margin: unset;
-  padding: unset;
-  text-align: inherit;
-  text-decoration: none;
-  appearance: none;
-}
-
 ::-webkit-scrollbar {
   width: 10px;
   z-index: 99;
 }
 
 ::-webkit-scrollbar-track {
-  background: #6d6d6d2c;
+  background: $color-green-dark;
 }
 
 ::-webkit-scrollbar-thumb {

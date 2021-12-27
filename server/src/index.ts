@@ -10,8 +10,8 @@ import { seedUser } from "./util/seedUser";
 const prisma = new PrismaClient();
 const app = express();
 const server = createServer(app);
-
 const port = process.env.PORT || 5000;
+
 let domain =
   process.env.NODE_ENV === "production"
     ? "https://www.xodius.io"

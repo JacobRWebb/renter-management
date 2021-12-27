@@ -4,7 +4,7 @@ import { axiosInstance } from "./constants";
 
 export const checkToken = async (store: EnhancedStore, token: string) => {
   try {
-    const response = await axiosInstance.post("user/token", { token });
+    const response = await axiosInstance.post("user/preFetchUser", { token });
     if (response.data.success) {
       delete response.data.success;
       store.dispatch(authSlice.actions.setUser(response.data));

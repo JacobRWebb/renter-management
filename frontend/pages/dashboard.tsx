@@ -2,8 +2,8 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { Navbar } from "../components/navbar";
 import { useAppSelector, wrapper } from "../store";
-import { Role } from "../store/authSlice";
 import { checkToken } from "../util/preRun";
 
 const Dashboard: NextPage<{ test: boolean }> = ({}) => {
@@ -17,29 +17,21 @@ const Dashboard: NextPage<{ test: boolean }> = ({}) => {
     }
   }, [authState.user]);
 
-  if (!authState.user) {
-    return <></>;
-  }
-
-  const user = authState.user;
-
   return (
-    <div className="page">
-      <div className="dashboard">
-        {user.roles.includes(Role.OWNER) && (
-          <div className="ownedProperties">
-            <h1 className="propertiesHeader">Owned Properties</h1>
-            {user.ownedProperty.map((property, index) => {
-              return (
-                <div className="property" key={index}>
-                  {property.name} - {property.address}
-                </div>
-              );
-            })}
-          </div>
-        )}
+    <>
+      <Navbar />
+      <div className="flex flex-col p-4 m-4 bg-white rounded">
+        <h1>Dashboard</h1>
       </div>
-    </div>
+      <div className="flex flex-col p-4">
+        <div className="bg-white flex flex-col snap-y max-h-[480px] overflow-auto">
+          <div className="snap-start h-20 min-h-20 flex flex-col justify-between white border-y-2 border-custom-blue">
+            <h1>Testing</h1>
+            <p>Testing Lower</p>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

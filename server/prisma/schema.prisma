@@ -8,45 +8,81 @@ datasource db {
 }
 
 enum Role {
-  USER
-  OWNER
-  TECHNICIAN
   ADMIN
+  MANAGER
+  TENANT
+  WORKER
 }
 
 model User {
-  id            String   @id @default(cuid())
+  id       String @id @default(cuid())
+  email    String @unique
+  password String
+
+  name           Name                   @relation(fields: [nameId], references: [id])
+  roles          Role[]
+  stripeUserId   StripeToUser           @relation(fields: [stripeToUserId], references: [id])
+  paymentIntents PaymentIntentsToUser[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  nameId         String   @unique
+  stripeToUserId String   @unique
+}
+
+model Name {
+  id            String @id @default(cuid())
   firstName     String
   middleInitial String
   lastName      String
-  username      String   @unique
-  roles         Role[]
-  email         String
-  password      String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  ownedProperty  Property[] @relation("OwnedBy")
-  rentedProperty Property[] @relation("RentedBy")
-  workedProperty Property[] @relation("WorkedBy")
+  User          User?
 }
 
-model RefreshToken {
-  RefreshToken String @id
+model StripeToUser {
+  id       String @id @default(cuid())
+  stripeId String @unique
+  User     User?
 }
 
-model Property {
-  id          String   @id @default(cuid())
-  name        String
-  description String
-  address     String
-  city        String
-  state       String
-  zip         String
-  owner       User     @relation(name: "OwnedBy", fields: [ownerId], references: [id])
-  ownerId     String
-  rentedBy    User[]   @relation(name: "RentedBy")
-  workedBy    User[]   @relation(name: "WorkedBy")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model PaymentIntentsToUser {
+  id       String  @id @default(cuid())
+  stripeId String  @unique
+  User     User?   @relation(fields: [userId], references: [id])
+  userId   String?
 }
+
+//   ownedProperty  Property[] @relation("OwnedBy")
+//   rentedProperty Property[] @relation("RentedBy")
+//   workedProperty Property[] @relation("WorkedBy")
+// }
+
+// model Property {
+//   id          String   @id @default(cuid())
+//   name        String
+//   description String
+//   address     String
+//   city        String
+//   state       String
+//   zip         String
+//   owner       User     @relation(name: "OwnedBy", fields: [ownerId], references: [id])
+//   ownerId     String
+//   rentedBy    User[]   @relation(name: "RentedBy")
+//   workedBy    User[]   @relation(name: "WorkedBy")
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+// }
+
+// enum PropertyVacancy {
+//   VACANT
+//   OCCUPIED
+// }
+
+// enum PropertyType {
+//   HOUSE
+//   COMMERCIAL
+//   APARTMENT
+//   CONDO
+//   TOWNHOUSE
+//   LAND
+//   OTHER
+// }
