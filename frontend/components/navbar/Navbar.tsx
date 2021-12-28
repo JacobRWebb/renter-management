@@ -10,9 +10,9 @@ import NavLogo from "./NavLogo";
 
 const PrimaryNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
   return (
-    <div className="flex justify-between items-center md:justify-start md:space-x-10 max-w-7xl mx-auto px-4 py-2">
+    <div className="flex justify-between items-center sm:justify-start sm:space-x-10 max-w-7xl mx-auto px-4 py-2">
       <NavLogo />
-      <div className="-mr-2 -my-2 md:hidden">
+      <div className="-mr-2 -my-2 sm:hidden">
         <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
           <span className="sr-only">Open menu</span>
           <FontAwesomeIcon
@@ -23,14 +23,14 @@ const PrimaryNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
         </Popover.Button>
       </div>
       {state.auth.user ? (
-        <div className="hidden md:flex space-x-4">
+        <div className="hidden sm:flex space-x-4">
           <NavItem displayName="Dashboard" to="/dashboard" />
           <NavItem displayName="Contacts" to="/contacts" />
         </div>
       ) : (
         <></>
       )}
-      <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0 space-x-4">
+      <div className="hidden sm:flex items-center justify-end sm:flex-1 lg:w-0 space-x-4">
         {!state.auth.user ? (
           <>
             <NavItem displayName="Sign In" to="/signin" />
