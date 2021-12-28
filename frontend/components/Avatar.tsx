@@ -4,13 +4,11 @@ import { API_URL } from "../util/constants";
 
 const Avatar: FunctionComponent<{ userId: string }> = ({ userId }) => {
   return (
-    <div className="flex justify-center items-center rounded-full">
+    <div className="relative flex h-8 w-8 justify-center items-center rounded-full overflow-hidden">
       <Image
-        className="rounded-full"
         draggable={false}
         src={`${API_URL}/user/avatar/${userId}`}
-        height={40}
-        width={40}
+        layout="fill"
         alt="avatar"
       />
     </div>

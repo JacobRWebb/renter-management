@@ -7,7 +7,8 @@ import Dropdown from "../common/Dropdown";
 import DropdownItem from "../common/DropdownItem";
 import NavItem from "./NavItem";
 import NavLogo from "./NavLogo";
-const PrimaryNavbar: FunctionComponent<{ store: AppState }> = ({ store }) => {
+
+const PrimaryNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
   return (
     <div className="flex justify-between items-center md:justify-start md:space-x-10 max-w-7xl mx-auto px-4 py-2">
       <NavLogo />
@@ -21,7 +22,7 @@ const PrimaryNavbar: FunctionComponent<{ store: AppState }> = ({ store }) => {
           />
         </Popover.Button>
       </div>
-      {store.auth.user ? (
+      {state.auth.user ? (
         <div className="hidden md:flex space-x-4">
           <NavItem displayName="Dashboard" to="/dashboard" />
           <NavItem displayName="Contacts" to="/contacts" />
@@ -30,7 +31,7 @@ const PrimaryNavbar: FunctionComponent<{ store: AppState }> = ({ store }) => {
         <></>
       )}
       <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0 space-x-4">
-        {!store.auth.user ? (
+        {!state.auth.user ? (
           <>
             <NavItem displayName="Sign In" to="/signin" />
           </>
@@ -52,16 +53,12 @@ const PrimaryNavbar: FunctionComponent<{ store: AppState }> = ({ store }) => {
               displayNode={
                 <>
                   <span className="sr-only">Open user menu</span>
-                  <Avatar userId={store.auth.user.id} />
+                  <Avatar userId={state.auth.user.id} />
                 </>
               }
             >
               <DropdownItem displayName="Profile" to="/profile" />
-              <DropdownItem
-                displayName="Logout"
-                to="/logout"
-                classNameExtend="text-red-500"
-              />
+              <DropdownItem displayName="Logout" to="/logout" warning={true} />
             </Dropdown>
           </>
         )}
@@ -70,7 +67,7 @@ const PrimaryNavbar: FunctionComponent<{ store: AppState }> = ({ store }) => {
   );
 };
 
-const PopupNavbar: FunctionComponent<{ store: AppState }> = ({ store }) => {
+const PopupNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
   return (
     <Transition
       as={Fragment}
@@ -83,24 +80,40 @@ const PopupNavbar: FunctionComponent<{ store: AppState }> = ({ store }) => {
     >
       <Popover.Panel
         focus
-        className="absolute flex justify-start rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white top-0 inset-x-0 m-2 transition transform origin-top-right md:hidden"
+        className="absolute flex flex-col justify-start rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white top-0 inset-x-0 m-2 transition transform origin-top-right md:hidden"
       >
         <div className="flex flex-col w-full pt-5 pb-6 px-5 divide-y-2 space-y-2">
-          <div className="flex w-full items-center justify-between">
-            <div className="flex flex-row items-center justify-center space-x-4">
-              {store.auth.user ? <Avatar userId={store.auth.user.id} /> : <></>}
-              <FontAwesomeIcon icon={"bell"} />
-            </div>
-            <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-              <span className="sr-only">Close menu</span>
-              <FontAwesomeIcon icon={"times"} />
-            </Popover.Button>
-          </div>
-          <div className="pt-1 flex flex-col">
-            <NavItem displayName="Dashboard" to="/dashboard" />
-            <NavItem displayName="Contacts" to="/contacts" />
-            <NavItem displayName="Logout" to="/logout" />
-          </div>
+          {state.auth.user ? (
+            <>
+              <div className="flex w-full items-center justify-between">
+                <div className="flex flex-row items-center justify-center space-x-4">
+                  <Avatar userId={state.auth.user.id} />
+                  <FontAwesomeIcon icon={"bell"} />
+                </div>
+                <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                  <span className="sr-only">Close menu</span>
+                  <FontAwesomeIcon icon={"times"} />
+                </Popover.Button>
+              </div>
+              <div className="pt-1 flex flex-col">
+                <NavItem displayName="Dashboard" to="/dashboard" />
+                <NavItem displayName="Contacts" to="/contacts" />
+                <NavItem displayName="Logout" to="/logout" />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex w-full items-center justify-between">
+                <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                  <span className="sr-only">Close menu</span>
+                  <FontAwesomeIcon icon={"times"} />
+                </Popover.Button>
+              </div>
+              <div className="pt-1 flex flex-col">
+                <NavItem displayName="Sign In" to="/signin" />
+              </div>
+            </>
+          )}
         </div>
       </Popover.Panel>
     </Transition>
@@ -108,12 +121,12 @@ const PopupNavbar: FunctionComponent<{ store: AppState }> = ({ store }) => {
 };
 
 const Navbar: FunctionComponent = () => {
-  const store = useAppSelector((store) => store);
+  const state = useAppSelector((state) => state);
 
   return (
     <Popover className="relative bg-white select-none text-custom-blue">
-      <PrimaryNavbar store={store} />
-      <PopupNavbar store={store} />
+      <PrimaryNavbar state={state} />
+      <PopupNavbar state={state} />
     </Popover>
   );
 };

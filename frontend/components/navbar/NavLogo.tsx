@@ -4,7 +4,7 @@ import { FunctionComponent } from "react";
 const NavLogo: FunctionComponent = () => {
   const router = useRouter();
   return (
-    <div className="flex justify-start w-0 flex-1">
+    <div className="flex justify-start w-0 flex-1 text-custom-blue">
       <h1
         className="cursor-pointer text-4xl font-bold"
         onClick={() => {
