@@ -1,12 +1,14 @@
 import { Router } from "express";
-import v1 from "./v1";
+import stripeRoutes from "./stripeRoutes";
+import userRoutes from "./userRoutes";
 
 const router = Router();
 
-router.use("/v1", v1);
+router.use("/user", userRoutes);
+router.use("/stripe", stripeRoutes);
 
-router.get("*", (_req, res) => {
-  res.send("Fallback endpoint");
+router.get("/", (_req, res) => {
+  res.send("Api Endpoint v1");
 });
 
 export default router;

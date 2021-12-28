@@ -1,7 +1,7 @@
 import { Dropbox } from "dropbox";
 import { Router } from "express";
-import { userController } from "../../controllers";
-import { authorizedAsync } from "../../middleware";
+import { userController } from "../controllers";
+import { authorizedAsync } from "../middleware";
 
 const router = Router();
 

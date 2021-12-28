@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { stripeController } from "../../controllers";
-import { authorizedAsync } from "../../middleware";
+import { stripeController } from "../controllers";
+import { authorizedAsync } from "../middleware";
 const router = Router();
 
 router.post("/createPaymentIntent", authorizedAsync, async (req, res) => {
