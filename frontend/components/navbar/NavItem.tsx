@@ -19,7 +19,7 @@ const NavItem: FunctionComponent<{
           router.push(to);
         }
       }}
-      className={`group font-medium h-full p-2 pb-1 cursor-pointer border-b-2 transition-all ${
+      className={`group whitespace-nowrap  font-medium h-full p-2 pb-1 cursor-pointer border-b-2 transition-all ${
         current ? "border-custom-blue" : "hover:border-blue-500"
       }`}
     >

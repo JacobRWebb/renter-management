@@ -15,6 +15,6 @@ module.exports = {
     ],
   },
   images: {
-    domains: ["placehold.it"],
+    domains: ["localhost", "placehold.it"],
   },
 };

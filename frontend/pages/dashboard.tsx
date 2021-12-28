@@ -23,14 +23,6 @@ const Dashboard: NextPage<{ test: boolean }> = ({}) => {
       <div className="flex flex-col p-4 m-4 bg-white rounded">
         <h1>Dashboard</h1>
       </div>
-      <div className="flex flex-col p-4">
-        <div className="bg-white flex flex-col snap-y max-h-[480px] overflow-auto">
-          <div className="snap-start h-20 min-h-20 flex flex-col justify-between white border-y-2 border-custom-blue">
-            <h1>Testing</h1>
-            <p>Testing Lower</p>
-          </div>
-        </div>
-      </div>
     </>
   );
 };

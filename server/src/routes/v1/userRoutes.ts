@@ -1,8 +1,30 @@
+import { Dropbox } from "dropbox";
 import { Router } from "express";
 import { userController } from "../../controllers";
 import { authorizedAsync } from "../../middleware";
 
 const router = Router();
+
+const dropbox = new Dropbox({
+  accessToken: process.env.DROPBOX_TOKEN,
+});
+
+router.get("/avatar/:userId", async (_req, res) => {
+  try {
+    const x = (await dropbox.filesDownload({
+      path: "/avatars/avatar.png",
+    })) as { result: any };
+    if (x.result) {
+      res.contentType("image/png");
+      return res.send(x.result.fileBinary);
+    }
+  } catch (err) {}
+
+  return res.json({
+    success: false,
+    message: "Failed to get avatar",
+  });
+});
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
