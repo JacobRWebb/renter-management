@@ -3,10 +3,10 @@ import { Popover, Transition } from "@headlessui/react";
 import React, { Fragment, FunctionComponent } from "react";
 import { AppState, useAppSelector } from "../../store";
 import Avatar from "../Avatar";
-import Dropdown from "../common/Dropdown";
-import DropdownItem from "../common/DropdownItem";
+import SigninButton from "../form/SigninButton";
 import NavItem from "./NavItem";
 import NavLogo from "./NavLogo";
+import NavUserSection from "./NavUserSection";
 
 const PrimaryNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
   return (
@@ -31,9 +31,10 @@ const PrimaryNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
         <></>
       )}
       <div className="hidden sm:flex items-center justify-end sm:flex-1 lg:w-0 space-x-4">
-        {!state.auth.user ? (
+        <NavUserSection user={state.auth.user} />
+        {/* {!state.auth.user ? (
           <>
-            <NavItem displayName="Sign In" to="/signin" />
+            <SigninButton />
           </>
         ) : (
           <>
@@ -61,7 +62,7 @@ const PrimaryNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
               <DropdownItem displayName="Logout" to="/logout" warning={true} />
             </Dropdown>
           </>
-        )}
+        )} */}
       </div>
     </div>
   );
@@ -80,21 +81,20 @@ const PopupNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
     >
       <Popover.Panel
         focus
-        className="absolute flex flex-col justify-start rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white top-0 inset-x-0 m-2 transition transform origin-top-right md:hidden"
+        className="absolute flex flex-col justify-start rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white top-0 inset-x-0 m-2 transition transform origin-top-right sm:hidden"
       >
         <div className="flex flex-col w-full pt-5 pb-6 px-5 divide-y-2 space-y-2">
+          <div className="flex flex-row items-center justify-between">
+            {state.auth.user ? <Avatar userId={state.auth.user.id} /> : null}
+            <Popover.Button>
+              <div className="bg-white rounded p-2 inline-flex items-center justify-center text-gray-400 ">
+                <span className="sr-only">Close menu</span>
+                <FontAwesomeIcon icon={"times"} />
+              </div>
+            </Popover.Button>
+          </div>
           {state.auth.user ? (
             <>
-              <div className="flex w-full items-center justify-between">
-                <div className="flex flex-row items-center justify-center space-x-4">
-                  <Avatar userId={state.auth.user.id} />
-                  <FontAwesomeIcon icon={"bell"} />
-                </div>
-                <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                  <span className="sr-only">Close menu</span>
-                  <FontAwesomeIcon icon={"times"} />
-                </Popover.Button>
-              </div>
               <div className="pt-1 flex flex-col">
                 <NavItem displayName="Dashboard" to="/dashboard" />
                 <NavItem displayName="Contacts" to="/contacts" />
@@ -103,14 +103,8 @@ const PopupNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
             </>
           ) : (
             <>
-              <div className="flex w-full items-center justify-between">
-                <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                  <span className="sr-only">Close menu</span>
-                  <FontAwesomeIcon icon={"times"} />
-                </Popover.Button>
-              </div>
               <div className="pt-1 flex flex-col">
-                <NavItem displayName="Sign In" to="/signin" />
+                <SigninButton />
               </div>
             </>
           )}
