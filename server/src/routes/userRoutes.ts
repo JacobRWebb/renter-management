@@ -1,54 +1,86 @@
-import { Dropbox } from "dropbox";
-import { Router } from "express";
-import { userController } from "../controllers";
+import { Request, Response, Router } from "express";
+import {
+  getUserAvatar,
+  login,
+  updateUserAvatar,
+} from "../controllers/userController";
 import { authorizedAsync } from "../middleware";
+import { avatarCache } from "../middleware/cacheMiddleware";
+import {
+  loginFormInput,
+  validateMiddleware,
+} from "../middleware/formMiddleware";
+import { DOMAIN, multer } from "../util/constants";
 
 const router = Router();
 
-const dropbox = new Dropbox({
-  accessToken: process.env.DROPBOX_TOKEN,
-});
-
-router.get("/avatar/:userId", async (_req, res) => {
-  try {
-    const x = (await dropbox.filesDownload({
-      path: "/avatars/avatar.png",
-    })) as { result: any };
-    if (x.result) {
-      res.contentType("image/png");
-      return res.send(x.result.fileBinary);
+router.post(
+  "/avatar/",
+  authorizedAsync,
+  multer.single("avatar"),
+  async (req, res) => {
+    try {
+      if (!req.file) throw new Error("No file");
+      await updateUserAvatar(res.locals.user.id, req.file.buffer);
+    } catch (err) {
+      return res.status(400).send(err.message);
     }
-  } catch (err) {}
 
-  return res.json({
-    success: false,
-    message: "Failed to get avatar",
-  });
-});
-
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const response = await userController.login(email, password);
-
-    res
-      .cookie("token", response.token, {
-        httpOnly: true,
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        domain: "localhost",
-        sameSite: "strict",
-      })
-      .json({ success: true });
-  } catch (e) {
-    res.json({
-      success: false,
-      error: e.message,
+    return res.json({
+      success: true,
     });
+  }
+);
+
+router.get("/avatar/:userId", avatarCache, async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const userAvatar = await getUserAvatar(userId);
+    res.set("Content-Type", "image/png");
+    return res.send(userAvatar);
+  } catch (err) {
+    return res.status(404).send(err.message);
   }
 });
 
+router.post(
+  "/login",
+  loginFormInput(),
+  validateMiddleware,
+  async (req: Request, res: Response) => {
+    try {
+      const loginResponse = await login({ ...req.body });
+
+      if (loginResponse.errors) {
+        return res.json({ errors: loginResponse.errors });
+      }
+
+      if (!loginResponse.token) throw new Error("Token Failed to generate");
+
+      return res
+        .cookie("token", loginResponse.token, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24 * 7,
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+          domain: `${DOMAIN}`,
+          sameSite: "strict",
+        })
+        .status(200)
+        .json({});
+    } catch (e) {
+      return res.json({
+        success: false,
+        error: {
+          system: `Login Failed - ${e.message}`,
+        },
+      });
+    }
+  }
+);
+
 router.post("/preFetchUser", authorizedAsync, async (_req, res) => {
+  await getUserAvatar(res.locals.user.id);
   return res.json({
     success: true,
     user: res.locals.user,

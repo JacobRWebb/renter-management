@@ -5,6 +5,7 @@ import cors from "cors";
 import express from "express";
 import { createServer } from "http";
 import routes from "./routes";
+import { memcached } from "./util/constants";
 import { seedUser } from "./util/seedUser";
 
 const prisma = new PrismaClient();
@@ -31,7 +32,6 @@ app.use("/", routes);
 
 const main = async () => {
   await seedUser();
-
   server.listen(port, () => {
     console.log(`Server listening on port http://localhost:${port}`);
   });
@@ -42,5 +42,6 @@ main()
     throw e;
   })
   .finally(() => {
+    memcached.close();
     prisma.$disconnect();
   });
