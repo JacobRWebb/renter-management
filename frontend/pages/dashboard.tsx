@@ -1,9 +1,10 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Navbar } from "../components/navbar";
 import { useAppSelector, wrapper } from "../store";
+import { axiosInstance } from "../util/constants";
 import { checkToken } from "../util/preRun";
 
 const Dashboard: NextPage<{ test: boolean }> = ({}) => {
@@ -17,11 +18,23 @@ const Dashboard: NextPage<{ test: boolean }> = ({}) => {
     }
   }, [authState.user]);
 
+  const test = () => {
+    axiosInstance
+      .post("stripe/GetStripeAccount")
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <Navbar />
       <div className="flex flex-col p-4 m-4 bg-white rounded">
         <h1>Dashboard</h1>
+        <button onClick={test}>Test</button>
       </div>
     </>
   );

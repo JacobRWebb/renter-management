@@ -17,7 +17,7 @@ const Signup: NextPage = () => {
   const [password, setPassword] = useState("");
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>();
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     if (authState.user) {
@@ -28,20 +28,21 @@ const Signup: NextPage = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setError(undefined);
+    setErrors({});
     axiosInstance
       .post("user/login", { email, password })
       .then((res) => {
-        if (res.data.success) {
-          router.push("/dashboard");
-        } else {
+        if (res.data.errors) {
+          setErrors(res.data.errors);
           setLoading(false);
-          setError(res.data.error);
+          return;
+        } else {
+          router.push("/dashboard");
         }
       })
       .catch((err) => {
+        console.log(err);
         setLoading(false);
-        setError(err.message);
       });
   };
 
@@ -57,6 +58,7 @@ const Signup: NextPage = () => {
         <InputField
           id="email"
           placeholder="Email"
+          error={errors.email !== undefined}
           type="email"
           autoComplete="email"
           onChange={(event) => {
@@ -66,6 +68,7 @@ const Signup: NextPage = () => {
         <InputField
           id="password"
           placeholder="Password"
+          error={errors.password !== undefined}
           type={passwordHidden ? "password" : "text"}
           autoComplete="password"
           onChange={(event) => {
@@ -82,15 +85,15 @@ const Signup: NextPage = () => {
           }
         />
         <div className="flex flex-row items-center mb-3">
-          {error ? (
-            <div className="flex flex-row items-center text-red-500 cursor-default">
-              <FontAwesomeIcon icon={"exclamation"} className="mr-2" />
-              <p className="font-base">{error}</p>
-            </div>
-          ) : (
-            <></>
-          )}
-
+          <div className="flex flex-col">
+            {Object.entries(errors).map(([key, value]) => {
+              return (
+                <div key={key} className="flex flex-col text-red-500 text-xs">
+                  {value}
+                </div>
+              );
+            })}
+          </div>
           <button
             className={`flex flex-row items-center transition-all ${
               loading ? "bg-green-700" : "bg-custom-blue"
