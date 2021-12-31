@@ -17,8 +17,11 @@ const Signup: NextPage = () => {
   const [password, setPassword] = useState("");
   const [passwordHidden, setPasswordHidden] = useState(true);
 
+  const [showingEmail, setShowingEmail] = useState(false);
+
   useEffect(() => {
     router.prefetch("/dashboard");
+    setShowingEmail(true);
   });
 
   useEffect(() => {
@@ -41,6 +44,7 @@ const Signup: NextPage = () => {
         <h1 className="w-full text-custom-blue text-center text-3xl font-medium mb-10">
           Sign in to your account
         </h1>
+
         <InputField
           id="email"
           placeholder="Email"
@@ -70,6 +74,7 @@ const Signup: NextPage = () => {
             />
           }
         />
+
         <div className="flex flex-row items-center mb-3">
           <div className="flex flex-col">
             {Object.entries(state.userState.errors).map(([key, value]) => {

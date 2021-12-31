@@ -14,7 +14,7 @@ const InputField: FunctionComponent<
   return (
     <div
       className={`flex flex-row items-center relative mb-8 border-b-2 ${
-        error ? "border-red-600" : "border-gray-300"
+        error ? "border-red-600 animate-wiggle" : "border-gray-300"
       } focus-within:border-custom-blue`}
     >
       <input
