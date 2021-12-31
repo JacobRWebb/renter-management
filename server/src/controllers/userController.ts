@@ -10,24 +10,38 @@ const cacheUserAvatar = async (userId: string, buffer: Buffer) => {
 };
 
 export const getUserAvatar = async (userId: string) => {
-  const dropboxCall = await dropbox.filesDownload({
-    path: `/avatars/${userId}.png`,
-  });
+  try {
+    const dropboxCall = await dropbox.filesDownload({
+      path: `/avatars/${userId}.png`,
+    });
 
-  if (dropboxCall.result) {
-    const { fileBinary } = dropboxCall.result as any;
-    await cacheUserAvatar(userId, fileBinary);
-    return fileBinary as Buffer;
-  } else {
-    throw new Error("Not found");
+    if (dropboxCall.result) {
+      const { fileBinary } = dropboxCall.result as any;
+      await cacheUserAvatar(userId, fileBinary);
+      return fileBinary as Buffer;
+    } else {
+      throw new Error("Not found");
+    }
+  } catch (error) {
+    const dropboxCall = await dropbox.filesDownload({
+      path: `/avatars/avatar.png`,
+    });
+    if (dropboxCall.result) {
+      const { fileBinary } = dropboxCall.result as any;
+      await cacheUserAvatar(userId, fileBinary);
+      return fileBinary as Buffer;
+    } else {
+      throw new Error("Image Missing");
+    }
   }
 };
 
 export const updateUserAvatar = async (userId: string, buffer: Buffer) => {
-  await dropbox.filesDeleteV2({ path: `/avatars/${userId}.png` });
-
   await dropbox.filesUpload({
     contents: buffer,
+    mode: {
+      ".tag": "overwrite",
+    },
     path: `/avatars/${userId}.png`,
   });
   await cacheUserAvatar(userId, buffer);

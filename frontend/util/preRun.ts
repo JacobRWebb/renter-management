@@ -1,13 +1,23 @@
 import { EnhancedStore } from "@reduxjs/toolkit";
-import { authSlice } from "../store/authSlice";
+import { User, userSlice } from "../store/userFeature";
 import { axiosInstance } from "./constants";
 
 export const checkToken = async (store: EnhancedStore, token: string) => {
   try {
-    const response = await axiosInstance.post("user/preFetchUser", { token });
-    if (response.data.success) {
-      delete response.data.success;
-      store.dispatch(authSlice.actions.setUser(response.data));
+    const response = await axiosInstance.post<{ user?: User }>(
+      "user/preFetchUser",
+      { token }
+    );
+    if (response.data.user) {
+      const user: User = {
+        ...response.data.user,
+        avatar: {
+          change: false,
+          newAvatar: null,
+          pending: false,
+        },
+      };
+      store.dispatch(userSlice.actions.setUser(user));
     }
   } catch (error) {}
 };

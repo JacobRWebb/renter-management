@@ -21,15 +21,11 @@ export const validateMiddleware = (
   });
 };
 
-export const loginFormInput = () =>
-  [
-    body("email")
-      .isEmail()
-      .withMessage("Invalid email address")
-      .normalizeEmail(),
-    body("password")
-      .isString()
-      .withMessage("Password is required")
-      .isLength({ min: 5 })
-      .withMessage("Password must be at least 5 characters"),
-  ] as ValidationChain[];
+export const loginFormInput = [
+  body("email").isEmail().withMessage("Invalid email address").normalizeEmail(),
+  body("password")
+    .isString()
+    .withMessage("Password is required")
+    .isLength({ min: 5 })
+    .withMessage("Password must be at least 5 characters"),
+] as ValidationChain[];

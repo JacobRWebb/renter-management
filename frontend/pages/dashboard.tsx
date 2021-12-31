@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Navbar } from "../components/navbar";
+import { authorizedOnly } from "../middleware/authMiddleware";
 import { useAppSelector, wrapper } from "../store";
 import { axiosInstance } from "../util/constants";
-import { checkToken } from "../util/preRun";
 
 const Dashboard: NextPage<{ test: boolean }> = ({}) => {
   const dispatch = useDispatch();
@@ -42,22 +42,8 @@ const Dashboard: NextPage<{ test: boolean }> = ({}) => {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => {
   return async (ctx) => {
-    const token = ctx.req.cookies.token;
-    if (token) {
-      await checkToken(store, token);
-      if (store.getState().auth.user) {
-        return {
-          props: {},
-        };
-      }
-    }
-
-    return {
-      redirect: {
-        destination: "/signin",
-        permanent: false,
-      },
-    };
+    const middleware = await authorizedOnly(store, ctx);
+    return middleware;
   };
 });
 

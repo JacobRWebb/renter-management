@@ -1,10 +1,9 @@
-import { PrismaClient, User } from "@prisma/client";
-import { stripe } from "../util/constants";
-const prisma = new PrismaClient();
+import { User } from "@prisma/client";
+import Stripe from "stripe";
+import { memcached, stripe } from "../util/constants";
 
 export const createPaymentIntent = async (user: User, itemId: string) => {
-  const stripeId = await stripeIdFromUser(user);
-  await cancelPaymentIntents(stripeId);
+  await cancelPaymentIntents(user.stripeId);
 
   const items = [
     { itemId: "982", price: 20.45 },
@@ -21,7 +20,7 @@ export const createPaymentIntent = async (user: User, itemId: string) => {
     amount: amount,
     currency: "usd",
     payment_method_types: ["card"],
-    customer: stripeId,
+    customer: user.stripeId,
     metadata: {
       itemId,
     },
@@ -43,13 +42,19 @@ export const cancelPaymentIntents = async (stripeId: string) => {
   }
 };
 
-export const stripeIdFromUser = async (user: User) => {
-  const stripeToUser = await prisma.stripeToUser.findFirst({
-    where: { User: { id: user.id } },
-  });
-
-  if (stripeToUser) {
-    return stripeToUser.stripeId;
+export const getStripeAccount = async (stripeId: string) => {
+  const data = await memcached.get(`getStripeAccount-${stripeId}`);
+  if (data.value !== null) {
+    const stripeCustomer: Stripe.Response<
+      Stripe.Customer | Stripe.DeletedCustomer
+    > = JSON.parse(data.value.toString());
+    return stripeCustomer;
   }
-  throw new Error("Unable to locate stripe id");
+  const stripeCustomer = await stripe.customers.retrieve(stripeId);
+  await memcached.set(
+    `getStripeAccount-${stripeId}`,
+    JSON.stringify(stripeCustomer),
+    { expires: 60 * 60 * 24 }
+  );
+  return stripeCustomer;
 };

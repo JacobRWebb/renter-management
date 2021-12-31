@@ -1,14 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FunctionComponent } from "react";
-import { IUser } from "../../store/authSlice";
+import { User } from "../../store/userFeature";
 import Avatar from "../Avatar";
 import Dropdown from "../common/Dropdown";
 import DropdownItem from "../common/DropdownItem";
 import SigninButton from "../form/SigninButton";
 
-const NavUserSection: FunctionComponent<{ user: IUser | null }> = ({
-  user,
-}) => {
+const NavUserSection: FunctionComponent<{ user: User | null }> = ({ user }) => {
   return (
     <div className="flex flex-row items-center justify-between space-x-4">
       {user ? (

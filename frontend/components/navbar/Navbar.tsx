@@ -8,6 +8,17 @@ import NavItem from "./NavItem";
 import NavLogo from "./NavLogo";
 import NavUserSection from "./NavUserSection";
 
+const Navbar: FunctionComponent = () => {
+  const state = useAppSelector((state) => state);
+
+  return (
+    <Popover className="relative bg-white select-none text-custom-blue">
+      <PrimaryNavbar state={state} />
+      <PopupNavbar state={state} />
+    </Popover>
+  );
+};
+
 const PrimaryNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
   return (
     <div className="flex justify-between items-center sm:justify-start sm:space-x-10 max-w-7xl mx-auto px-4 py-2">
@@ -22,7 +33,8 @@ const PrimaryNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
           />
         </Popover.Button>
       </div>
-      {state.auth.user ? (
+
+      {state.userState.user !== null ? (
         <div className="hidden sm:flex space-x-4">
           <NavItem displayName="Dashboard" to="/dashboard" />
           <NavItem displayName="Contacts" to="/contacts" />
@@ -31,38 +43,7 @@ const PrimaryNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
         <></>
       )}
       <div className="hidden sm:flex items-center justify-end sm:flex-1 lg:w-0 space-x-4">
-        <NavUserSection user={state.auth.user} />
-        {/* {!state.auth.user ? (
-          <>
-            <SigninButton />
-          </>
-        ) : (
-          <>
-            <Dropdown
-              rounded={true}
-              displayNode={
-                <>
-                  <span className="sr-only"></span>
-                  <FontAwesomeIcon icon={"bell"} />
-                </>
-              }
-            >
-              <DropdownItem displayName="Nothing here yet" />
-            </Dropdown>
-            <Dropdown
-              rounded={true}
-              displayNode={
-                <>
-                  <span className="sr-only">Open user menu</span>
-                  <Avatar userId={state.auth.user.id} />
-                </>
-              }
-            >
-              <DropdownItem displayName="Profile" to="/profile" />
-              <DropdownItem displayName="Logout" to="/logout" warning={true} />
-            </Dropdown>
-          </>
-        )} */}
+        <NavUserSection user={state.userState.user} />
       </div>
     </div>
   );
@@ -85,7 +66,9 @@ const PopupNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
       >
         <div className="flex flex-col w-full pt-5 pb-6 px-5 divide-y-2 space-y-2">
           <div className="flex flex-row items-center justify-between">
-            {state.auth.user ? <Avatar userId={state.auth.user.id} /> : null}
+            {state.userState.user !== null ? (
+              <Avatar userId={state.userState.user.id} />
+            ) : null}
             <Popover.Button>
               <div className="bg-white rounded p-2 inline-flex items-center justify-center text-gray-400 ">
                 <span className="sr-only">Close menu</span>
@@ -93,7 +76,7 @@ const PopupNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
               </div>
             </Popover.Button>
           </div>
-          {state.auth.user ? (
+          {state.userState.user !== null ? (
             <>
               <div className="pt-1 flex flex-col">
                 <NavItem displayName="Dashboard" to="/dashboard" />
@@ -111,17 +94,6 @@ const PopupNavbar: FunctionComponent<{ state: AppState }> = ({ state }) => {
         </div>
       </Popover.Panel>
     </Transition>
-  );
-};
-
-const Navbar: FunctionComponent = () => {
-  const state = useAppSelector((state) => state);
-
-  return (
-    <Popover className="relative bg-white select-none text-custom-blue">
-      <PrimaryNavbar state={state} />
-      <PopupNavbar state={state} />
-    </Popover>
   );
 };
 

@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-import { stripe } from "./constants";
-
+import { dropbox, stripe } from "./constants";
 const prisma = new PrismaClient();
 
 export const seedUser = async () => {
@@ -12,12 +11,14 @@ export const seedUser = async () => {
   if (!user) {
     const stripeCustomer = await stripe.customers.create({
       email: "test@gmail.com",
-      name: `Test T User`,
+      name: "Test T User",
     });
-    await prisma.user.create({
+
+    const newUser = await prisma.user.create({
       data: {
         email: "test@gmail.com",
         password: await bcrypt.hash("password", 12),
+        stripeId: stripeCustomer.id,
         name: {
           create: {
             firstName: "Test",
@@ -25,12 +26,14 @@ export const seedUser = async () => {
             lastName: "User",
           },
         },
-        stripeUserId: {
-          create: {
-            stripeId: stripeCustomer.id,
-          },
-        },
       },
     });
+
+    try {
+      await dropbox.filesCopyV2({
+        from_path: "/avatars/avatar.png",
+        to_path: `/avatars/${newUser.id}.png`,
+      });
+    } catch (error) {}
   }
 };

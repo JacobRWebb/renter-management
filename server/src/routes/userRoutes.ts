@@ -46,7 +46,7 @@ router.get("/avatar/:userId", avatarCache, async (req, res) => {
 
 router.post(
   "/login",
-  loginFormInput(),
+  loginFormInput,
   validateMiddleware,
   async (req: Request, res: Response) => {
     try {
@@ -80,11 +80,25 @@ router.post(
 );
 
 router.post("/preFetchUser", authorizedAsync, async (_req, res) => {
-  await getUserAvatar(res.locals.user.id);
-  return res.json({
-    success: true,
-    user: res.locals.user,
-  });
+  try {
+    await getUserAvatar(res.locals.user.id);
+    delete res.locals.user.password;
+    delete res.locals.user.nameId;
+    delete res.locals.user.stripeId;
+    delete res.locals.user.name.id;
+    delete res.locals.user.name.userId;
+
+    return res.json({
+      user: res.locals.user,
+    });
+  } catch (error) {
+    return res.json({
+      success: false,
+      error: {
+        system: `Login Failed - ${error.message}`,
+      },
+    });
+  }
 });
 
 router.get("/", (_req, res) => {

@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { FunctionComponent } from "react";
-import { IUser } from "../../store/authSlice";
+import { User } from "../../store/userFeature";
 import { API_URL } from "../../util/constants";
 
-const ProfileContainer: FunctionComponent<{ user: IUser | null }> = ({
+const ProfileContainer: FunctionComponent<{ user: User | null }> = ({
   user,
   children,
 }) => {

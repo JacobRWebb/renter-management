@@ -2,10 +2,10 @@ import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { combineReducers } from "redux";
-import { authSlice } from "./authSlice";
+import { userSlice } from "./userFeature";
 
 const rootReducer = combineReducers({
-  [authSlice.name]: authSlice.reducer,
+  [userSlice.name]: userSlice.reducer,
 });
 
 const makeStore = () =>

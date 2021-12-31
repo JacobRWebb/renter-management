@@ -38,9 +38,13 @@ export const authorizedAsync = async (
 ) => {
   const id = checkToken(req);
   if (id) {
-    const user = await prisma.user.findFirst({ where: { id } });
+    const user = await prisma.user.findFirst({
+      where: { id },
+      include: {
+        name: true,
+      },
+    });
     if (user) {
-      res.locals.userId = id;
       res.locals.user = user;
       return next();
     } else {

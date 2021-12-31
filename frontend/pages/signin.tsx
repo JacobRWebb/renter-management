@@ -4,46 +4,32 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import InputField from "../components/form/InputField";
+import { nonAuthorized } from "../middleware/authMiddleware";
 import { useAppSelector, wrapper } from "../store";
-import { axiosInstance } from "../util/constants";
-import { checkToken } from "../util/preRun";
+import { loginByEmail } from "../store/userFeature";
 
 const Signup: NextPage = () => {
   const dispatch = useDispatch();
-  const authState = useAppSelector((state) => state.auth);
+  const state = useAppSelector((state) => state);
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordHidden, setPasswordHidden] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
-    if (authState.user) {
+    router.prefetch("/dashboard");
+  });
+
+  useEffect(() => {
+    if (state.userState.success) {
       router.push("/dashboard");
     }
-  }, [authState]);
+  }, [state.userState]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
-    setErrors({});
-    axiosInstance
-      .post("user/login", { email, password })
-      .then((res) => {
-        if (res.data.errors) {
-          setErrors(res.data.errors);
-          setLoading(false);
-          return;
-        } else {
-          router.push("/dashboard");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+    dispatch(loginByEmail({ email, password }));
   };
 
   return (
@@ -58,7 +44,7 @@ const Signup: NextPage = () => {
         <InputField
           id="email"
           placeholder="Email"
-          error={errors.email !== undefined}
+          error={state.userState.errors.email !== undefined}
           type="email"
           autoComplete="email"
           onChange={(event) => {
@@ -68,7 +54,7 @@ const Signup: NextPage = () => {
         <InputField
           id="password"
           placeholder="Password"
-          error={errors.password !== undefined}
+          error={state.userState.errors.password !== undefined}
           type={passwordHidden ? "password" : "text"}
           autoComplete="password"
           onChange={(event) => {
@@ -86,7 +72,7 @@ const Signup: NextPage = () => {
         />
         <div className="flex flex-row items-center mb-3">
           <div className="flex flex-col">
-            {Object.entries(errors).map(([key, value]) => {
+            {Object.entries(state.userState.errors).map(([key, value]) => {
               return (
                 <div key={key} className="flex flex-col text-red-500 text-xs">
                   {value}
@@ -96,11 +82,11 @@ const Signup: NextPage = () => {
           </div>
           <button
             className={`flex flex-row items-center transition-all ${
-              loading ? "bg-green-700" : "bg-custom-blue"
+              state.userState.pending ? "bg-green-700" : "bg-custom-blue"
             } text-custom-cream px-4 py-2 rounded w-fit ml-auto hover:bg-green-700`}
             type="submit"
           >
-            {loading ? (
+            {state.userState.pending ? (
               <>
                 <svg
                   className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -138,23 +124,8 @@ const Signup: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => {
   return async (ctx) => {
-    const token = ctx.req.cookies.token;
-    if (token) {
-      await checkToken(store, token);
-    }
-
-    if (store.getState().auth.user) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-
-    return {
-      props: {},
-    };
+    const middleware = await nonAuthorized(store, ctx);
+    return middleware;
   };
 });
 
