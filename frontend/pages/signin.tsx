@@ -82,11 +82,13 @@ const Signup: NextPage = () => {
           </div>
           <button
             className={`flex flex-row items-center transition-all ${
-              state.userState.pending ? "bg-green-700" : "bg-custom-blue"
+              state.userState.pending || state.userState.success
+                ? "bg-green-700"
+                : "bg-custom-blue"
             } text-custom-cream px-4 py-2 rounded w-fit ml-auto hover:bg-green-700`}
             type="submit"
           >
-            {state.userState.pending ? (
+            {state.userState.pending || state.userState.success ? (
               <>
                 <svg
                   className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
