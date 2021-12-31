@@ -3,15 +3,12 @@ import { Fragment, FunctionComponent, ReactNode } from "react";
 
 const Dropdown: FunctionComponent<{
   displayNode: ReactNode;
-  rounded?: boolean;
   classNameExtend?: string;
-}> = ({ displayNode, rounded = false, classNameExtend = "", children }) => {
+}> = ({ displayNode, classNameExtend = "", children }) => {
   return (
     <Menu as="div" className={`relative ${classNameExtend}`}>
       <Menu.Button
-        className={`flex flex-row items-center justify-center max-w-xs focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500 ${
-          rounded ? "rounded-full" : ""
-        }`}
+        className={`flex flex-row items-center justify-center max-w-xs focus:outline-none rounded-md focus:ring-2  focus:ring-offset-gray-100 focus:ring-indigo-500`}
       >
         {displayNode}
       </Menu.Button>

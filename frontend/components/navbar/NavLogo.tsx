@@ -4,14 +4,14 @@ import { FunctionComponent } from "react";
 const NavLogo: FunctionComponent = () => {
   const router = useRouter();
   return (
-    <div className="flex justify-start w-0 flex-1 text-custom-blue">
+    <div className="flex justify-start text-custom-blue">
       <h1
         className="cursor-pointer text-4xl font-bold"
         onClick={() => {
           router.push("/");
         }}
       >
-        Xodius
+        Company Name
       </h1>
     </div>
   );

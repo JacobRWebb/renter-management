@@ -1,22 +1,15 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { Navbar } from "../components/navbar";
 import { authorizedOnly } from "../middleware/authMiddleware";
-import { useAppSelector, wrapper } from "../store";
+import { wrapper } from "../store";
 import { axiosInstance } from "../util/constants";
 
 const Dashboard: NextPage<{ test: boolean }> = ({}) => {
   const dispatch = useDispatch();
-  const authState = useAppSelector((state) => state.auth);
   const router = useRouter();
-
-  useEffect(() => {
-    if (!authState.user) {
-      router.push("/signin");
-    }
-  }, [authState.user]);
 
   const test = () => {
     axiosInstance
