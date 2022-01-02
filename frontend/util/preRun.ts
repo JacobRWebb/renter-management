@@ -13,7 +13,6 @@ export const checkToken = async (store: EnhancedStore, token: string) => {
         ...response.data.user,
         avatar: {
           change: false,
-          newAvatar: null,
           pending: false,
         },
       };
