@@ -59,7 +59,7 @@ export const unAuthorizedOnlyMiddleware: Middleware = async (
     if (store.getState().userState.user) {
       return {
         redirect: {
-          destination: "/",
+          destination: "/dashboard",
           permanent: false,
         },
       };

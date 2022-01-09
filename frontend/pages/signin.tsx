@@ -135,6 +135,8 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => {
     const middlewareRunner = new MiddlewareRunner(store, ctx);
     middlewareRunner.build([unAuthorizedOnlyMiddleware]);
     const res = await middlewareRunner.run();
+    console.log(res);
+
     return res;
   };
 });
