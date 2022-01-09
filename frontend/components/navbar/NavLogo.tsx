@@ -11,7 +11,7 @@ const NavLogo: FunctionComponent = () => {
           router.push("/");
         }}
       >
-        Company Name
+        Xodius
       </h1>
     </div>
   );
