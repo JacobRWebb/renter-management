@@ -14,8 +14,6 @@ router.get(
   "/avatar/:userId",
   avatarCache,
   async (req: Request, res: Response) => {
-    console.log("Called");
-
     const { userId } = req.params;
     try {
       const userAvatar = await getUserAvatar(userId);
