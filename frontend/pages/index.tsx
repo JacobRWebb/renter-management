@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
 import { Navbar } from "../components/navbar";
-import { nonAuthorized } from "../middleware/authMiddleware";
 import { wrapper } from "../store";
+import { MiddlewareRunner } from "../util/middleware";
+import { unAuthorizedOnlyMiddleware } from "../util/middleware/authMiddleware";
 
 const Index: NextPage = () => {
   return (
@@ -13,8 +14,10 @@ const Index: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => {
   return async (ctx) => {
-    const middleware = await nonAuthorized(store, ctx);
-    return middleware;
+    const middlewareRunner = new MiddlewareRunner(store, ctx);
+    middlewareRunner.build([unAuthorizedOnlyMiddleware]);
+    const res = await middlewareRunner.run();
+    return res;
   };
 });
 

@@ -4,9 +4,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import InputField from "../components/form/InputField";
-import { nonAuthorized } from "../middleware/authMiddleware";
 import { useAppSelector, wrapper } from "../store";
 import { loginByEmail } from "../store/userFeature";
+import { MiddlewareRunner } from "../util/middleware";
+import { unAuthorizedOnlyMiddleware } from "../util/middleware/authMiddleware";
 
 const Signup: NextPage = () => {
   const dispatch = useDispatch();
@@ -131,8 +132,10 @@ const Signup: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => {
   return async (ctx) => {
-    const middleware = await nonAuthorized(store, ctx);
-    return middleware;
+    const middlewareRunner = new MiddlewareRunner(store, ctx);
+    middlewareRunner.build([unAuthorizedOnlyMiddleware]);
+    const res = await middlewareRunner.run();
+    return res;
   };
 });
 

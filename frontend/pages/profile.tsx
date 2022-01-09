@@ -4,9 +4,10 @@ import { useDispatch } from "react-redux";
 import Avatar from "../components/Avatar";
 import { Navbar } from "../components/navbar";
 import ProfileContainer from "../components/profile/ProfileContainer";
-import { authorizedOnly } from "../middleware/authMiddleware";
 import { useAppSelector, wrapper } from "../store";
 import { changeAvatar } from "../store/userFeature";
+import { MiddlewareRunner } from "../util/middleware";
+import { authorizedOnlyMiddleware } from "../util/middleware/authMiddleware";
 
 const Profile: NextPage = () => {
   const dispatch = useDispatch();
@@ -64,8 +65,11 @@ const Profile: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => {
   return async (ctx) => {
-    const middleware = await authorizedOnly(store, ctx);
-    return middleware;
+    const middlewareRunner = new MiddlewareRunner(store, ctx);
+    middlewareRunner.build([authorizedOnlyMiddleware]);
+    const res = await middlewareRunner.run();
+
+    return res;
   };
 });
 
