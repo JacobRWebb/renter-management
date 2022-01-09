@@ -29,9 +29,7 @@ export const authorizedOnlyMiddleware: Middleware = async (
   try {
     await checkToken(store, ctx);
     if (store.getState().userState.user) {
-      return {
-        props: {},
-      };
+      return undefined;
     }
 
     return {

@@ -42,6 +42,7 @@ export class MiddlewareRunner {
       let res = await m(this.store, this.ctx);
       if (res !== undefined) {
         response = res;
+        break;
       }
     }
 

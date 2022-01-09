@@ -14,6 +14,7 @@ export const isBannedMiddleware: Middleware = async (
     const response = await axiosInstance.get(
       `user/isBanned${store.getState().userState.user?.id}`
     );
+
     if (response.data.banned) {
       return {
         redirect: {
