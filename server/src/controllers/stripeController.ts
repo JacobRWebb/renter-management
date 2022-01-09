@@ -1,60 +1,78 @@
-import { User } from "@prisma/client";
-import Stripe from "stripe";
-import { memcached, stripe } from "../util/constants";
+import { PrismaClient } from "@prisma/client";
+import { stripe } from "../util/constants";
+const prisma = new PrismaClient();
 
-export const createPaymentIntent = async (user: User, itemId: string) => {
-  await cancelPaymentIntents(user.stripeId);
-
-  const items = [
-    { itemId: "982", price: 20.45 },
-    { itemId: "645", price: 100.6355 },
-  ];
-  const item = items.find((i) => i.itemId === itemId);
-  if (!item) {
-    throw new Error("Item not found");
-  }
-
-  const amount = item.price * 100;
-
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: amount,
-    currency: "usd",
-    payment_method_types: ["card"],
-    customer: user.stripeId,
-    metadata: {
-      itemId,
+export const findOrCreateStripeAccount = async (email: string) => {
+  let user = await prisma.stripe.findUnique({
+    where: {
+      userEmail: email,
     },
   });
 
-  return paymentIntent.client_secret;
-};
+  if (user) {
+    return user;
+  }
 
-export const cancelPaymentIntents = async (stripeId: string) => {
-  const paymentIntents = await stripe.paymentIntents.list({
-    customer: stripeId,
+  const stripeAccount = await stripe.accounts.create({
+    type: "custom",
+    country: "US",
+    capabilities: {
+      card_payments: {
+        requested: true,
+      },
+      transfers: {
+        requested: true,
+      },
+      tax_reporting_us_1099_misc: {
+        requested: true,
+      },
+    },
+    business_type: "individual",
+    email,
+    default_currency: "usd",
   });
-  for (const paymentIntent of paymentIntents.data) {
-    if (paymentIntent.status === "requires_payment_method") {
-      await stripe.paymentIntents.cancel(paymentIntent.id, {
-        cancellation_reason: "abandoned",
-      });
-    }
-  }
+
+  user = await prisma.stripe.create({
+    data: {
+      id: stripeAccount.id,
+      userEmail: email,
+    },
+  });
+
+  return user;
 };
 
-export const getStripeAccount = async (stripeId: string) => {
-  const data = await memcached.get(`getStripeAccount-${stripeId}`);
-  if (data.value !== null) {
-    const stripeCustomer: Stripe.Response<
-      Stripe.Customer | Stripe.DeletedCustomer
-    > = JSON.parse(data.value.toString());
-    return stripeCustomer;
-  }
-  const stripeCustomer = await stripe.customers.retrieve(stripeId);
-  await memcached.set(
-    `getStripeAccount-${stripeId}`,
-    JSON.stringify(stripeCustomer),
-    { expires: 60 * 60 * 24 }
-  );
-  return stripeCustomer;
+export const createStripeCustomer = async (
+  email: string,
+  name: { firstName: string; middleInitial: string; lastName: string }
+) => {
+  const createStripeCustomer = await stripe.customers.create({
+    name: `${name.firstName} ${name.middleInitial} ${name.lastName}`,
+    email,
+  });
+
+  await prisma.stripe.upsert({
+    where: {
+      userEmail: email,
+    },
+    create: {
+      id: createStripeCustomer.id,
+      userEmail: email,
+    },
+    update: {
+      id: createStripeCustomer.id,
+      userEmail: email,
+    },
+  });
+  return createStripeCustomer.id;
+};
+
+export const getStripeIdFromDatabase = async (email: string) => {
+  const stripe = await prisma.stripe.findUnique({
+    where: {
+      userEmail: email,
+    },
+  });
+
+  return stripe ? stripe.id : null;
 };
