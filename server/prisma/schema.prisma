@@ -27,21 +27,29 @@ model User {
   id        String     @id @default(cuid())
   email     String     @unique
   password  String
-  name      Name?
+  name      Name       @relation(fields: [nameId], references: [id])
+  nameId    String     @unique
   roles     Role[]
-  stripeId  String
   property  Property[]
+  stripe    Stripe     @relation(fields: [stripeId], references: [id])
+  stripeId  String     @unique
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 }
 
+model Stripe {
+  id        String  @unique
+  User      User?
+  userEmail String? @unique
+}
+
 model Name {
-  id            String @id @default(cuid())
+  id            String  @id @default(cuid())
   firstName     String
   middleInitial String
   lastName      String
-  User          User   @relation(fields: [userId], references: [id])
-  userId        String @unique
+  User          User?
+  userEmail     String? @unique
 }
 
 model Property {
