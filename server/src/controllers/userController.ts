@@ -1,6 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { findOrCreateStripeAccount } from "../controllers/stripeController";
 import { dropbox, memcached } from "../util/constants";
 
 const prisma = new PrismaClient();
@@ -84,4 +85,69 @@ export const login = async ({
   });
 
   return { token };
+};
+
+// Register
+export const registerUser = async (
+  email: string,
+  nameInput: { firstName: string; middleInitial: string; lastName: string },
+  password: string,
+  roles: Role[] = ["TENANT"]
+) => {
+  const user = await getUserByEmail(email);
+  if (user) {
+    return;
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+  const name = await findOrCreateName(email, nameInput);
+  const stripeAccount = await findOrCreateStripeAccount(email);
+
+  await prisma.user.create({
+    data: {
+      email,
+      password: hashedPassword,
+      roles,
+      stripe: {
+        connect: {
+          id: stripeAccount.id,
+        },
+      },
+      name: {
+        connect: {
+          id: name.id,
+        },
+      },
+    },
+  });
+};
+
+export const getUserByEmail = async (email: string) => {
+  return await prisma.user.findUnique({
+    where: { email },
+  });
+};
+
+const findOrCreateName = async (
+  email: string,
+  nameInput: { firstName: string; middleInitial: string; lastName: string }
+) => {
+  let name = await prisma.name.findUnique({
+    where: {
+      userEmail: email,
+    },
+  });
+
+  if (name === null) {
+    name = await prisma.name.create({
+      data: {
+        firstName: nameInput.firstName,
+        middleInitial: nameInput.middleInitial,
+        lastName: nameInput.lastName,
+        userEmail: email,
+      },
+    });
+  }
+
+  return name;
 };
