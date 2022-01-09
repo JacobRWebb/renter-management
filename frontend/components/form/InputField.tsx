@@ -14,7 +14,7 @@ const InputField: FunctionComponent<
   return (
     <div
       className={`flex flex-row items-center relative mb-8 border-b-2 ${
-        error ? "border-red-600 animate-wiggle" : "border-gray-300"
+        error ? "border-red-600" : "border-gray-300"
       } focus-within:border-custom-blue`}
     >
       <input
@@ -25,7 +25,7 @@ const InputField: FunctionComponent<
         htmlFor={inputProps.id}
         className={`absolute select-none left-0 -top-4 ${
           error
-            ? "text-red-600 peer-autofill:text-red-600 peer-placeholder-shown:text-red-600 peer-focus:text-red-600"
+            ? "text-red-600 animate-wiggle peer-autofill:text-red-600 peer-placeholder-shown:text-red-600 peer-focus:text-red-600"
             : "text-gray-600 peer-autofill:text-gray-400 peer-placeholder-shown:text-gray-400 peer-focus:text-gray-400"
         } text-sm transition-all peer-autofill:-top-4 peer-autofill:text-sm peer-placeholder-shown:text-base peer-placeholder-shown:top-2 peer-focus:-top-4 peer-focus:text-sm`}
       >
