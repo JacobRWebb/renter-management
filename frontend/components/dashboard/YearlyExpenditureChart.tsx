@@ -1,6 +1,5 @@
 import { Chart, registerables } from "chart.js";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
-import { axiosInstance } from "../../util/constants";
 
 const YearlyExpenditureChart: FunctionComponent = () => {
   const yearlyChartRef = useRef<HTMLCanvasElement>(null);
@@ -12,10 +11,10 @@ const YearlyExpenditureChart: FunctionComponent = () => {
 
   useEffect(() => {
     Chart.register(...registerables);
-    axiosInstance
-      .post("stripe/getInvoices")
-      .then((res) => {})
-      .catch((error) => {});
+    // axiosInstance
+    //   .post("stripe/getInvoices")
+    //   .then((res) => {})
+    //   .catch((error) => {});
 
     if (yearlyChart !== null) {
       yearlyChart.data.datasets[0].data = yearlyChartData;
@@ -75,7 +74,6 @@ const YearlyExpenditureChart: FunctionComponent = () => {
 
   return (
     <div className="flex flex-col rounded-lg bg-white p-4">
-      {/* <h1 className="text-xl font-medium">Yearly Expenditure</h1> */}
       <div ref={yearlyChartParentRef} className="relative flex flex-col h-52">
         <div
           className={`absolute flex items-center justify-center top-0 w-full h-full bg-white opacity-50 ${
@@ -88,19 +86,6 @@ const YearlyExpenditureChart: FunctionComponent = () => {
         </div>
         <canvas ref={yearlyChartRef}></canvas>
       </div>
-      {/* <button
-        onClick={() => {
-          let tempData = [...yearlyChartData];
-          tempData.push(Math.floor(Math.random() * 100));
-          setYearlyChartData(tempData);
-          let tempLabels = [...yearlyChartLabels];
-          tempLabels.push(`${tempLabels.length + 1}`);
-          setYearlyChartLabels(tempLabels);
-        }}
-        className="bg-blue-800 text-white w-fit mx-auto rounded p-1 mt-4"
-      >
-        Add Fake Data Test
-      </button> */}
     </div>
   );
 };
