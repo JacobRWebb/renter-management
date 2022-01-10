@@ -1,13 +1,13 @@
+import InputField from "@/components/form/InputField";
+import { useAppSelector, wrapper } from "@/store";
+import { loginByEmail } from "@/store/userFeature";
+import { MiddlewareRunner } from "@/util/middleware";
+import { unAuthorizedOnlyMiddleware } from "@/util/middleware/authMiddleware";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import InputField from "../components/form/InputField";
-import { useAppSelector, wrapper } from "../store";
-import { loginByEmail } from "../store/userFeature";
-import { MiddlewareRunner } from "../util/middleware";
-import { unAuthorizedOnlyMiddleware } from "../util/middleware/authMiddleware";
 
 const Signup: NextPage = () => {
   const dispatch = useDispatch();

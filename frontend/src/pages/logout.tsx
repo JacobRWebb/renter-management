@@ -1,5 +1,5 @@
+import { wrapper } from "@/store";
 import { NextPage } from "next";
-import { wrapper } from "../store";
 
 const Logout: NextPage = () => {
   return <div></div>;

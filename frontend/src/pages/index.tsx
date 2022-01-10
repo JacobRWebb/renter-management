@@ -1,8 +1,8 @@
+import { Navbar } from "@/components/navbar";
+import { wrapper } from "@/store";
+import { MiddlewareRunner } from "@/util/middleware";
+import { unAuthorizedOnlyMiddleware } from "@/util/middleware/authMiddleware";
 import type { NextPage } from "next";
-import { Navbar } from "../components/navbar";
-import { wrapper } from "../store";
-import { MiddlewareRunner } from "../util/middleware";
-import { unAuthorizedOnlyMiddleware } from "../util/middleware/authMiddleware";
 
 const Index: NextPage = () => {
   return (

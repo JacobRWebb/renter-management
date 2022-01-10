@@ -1,5 +1,5 @@
+import * as Gradient from "@/util/Gradient";
 import { FunctionComponent, useEffect, useRef } from "react";
-import * as Gradient from "../util/Gradient";
 
 const Background: FunctionComponent = ({ children }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);

@@ -1,8 +1,8 @@
+import { AppStore } from "@/store";
+import { User, userSlice } from "@/store/userFeature";
 import { GetServerSidePropsContext, PreviewData } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { Middleware } from ".";
-import { AppStore } from "../../store";
-import { User, userSlice } from "../../store/userFeature";
 import { axiosInstance } from "../constants";
 
 export const checkToken = async (

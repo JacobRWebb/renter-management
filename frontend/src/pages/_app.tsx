@@ -1,10 +1,10 @@
+import Background from "@/components/Background";
+import { wrapper } from "@/store";
+import "@/styles/index.scss";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import Background from "../components/Background";
-import { wrapper } from "../store";
-import "../styles/index.scss";
 
 library.add(fas);
 

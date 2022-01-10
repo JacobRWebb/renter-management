@@ -1,7 +1,7 @@
+import { axiosInstance } from "@/util/constants";
 import clsx from "clsx";
 import Image from "next/image";
 import { FunctionComponent, useEffect, useState } from "react";
-import { axiosInstance } from "../util/constants";
 
 const Avatar: FunctionComponent<{ userId?: string }> = ({ userId }) => {
   const [avatar, setAvatar] = useState<string>(

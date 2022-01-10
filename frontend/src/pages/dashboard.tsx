@@ -1,13 +1,13 @@
+import ModuleTransition from "@/components/dashboard/ModuleTransition";
+import PayDashModule from "@/components/dashboard/PayDashModule";
+import YearlyExpenditureChart from "@/components/dashboard/YearlyExpenditureChart";
+import { Navbar } from "@/components/navbar";
+import { wrapper } from "@/store";
+import { MiddlewareRunner } from "@/util/middleware";
+import { authorizedOnlyMiddleware } from "@/util/middleware/authMiddleware";
+import { isBannedMiddleware } from "@/util/middleware/miscMiddleware";
 import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
-import ModuleTransition from "../components/dashboard/ModuleTransition";
-import PayDashModule from "../components/dashboard/PayDashModule";
-import YearlyExpenditureChart from "../components/dashboard/YearlyExpenditureChart";
-import { Navbar } from "../components/navbar";
-import { wrapper } from "../store";
-import { MiddlewareRunner } from "../util/middleware";
-import { authorizedOnlyMiddleware } from "../util/middleware/authMiddleware";
-import { isBannedMiddleware } from "../util/middleware/miscMiddleware";
 
 const Dashboard: NextPage<{ test: boolean }> = ({}) => {
   const [loaded, setLoaded] = useState(false);

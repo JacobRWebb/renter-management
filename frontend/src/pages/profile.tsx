@@ -1,12 +1,12 @@
+import { Navbar } from "@/components/navbar";
+import ProfileContainer from "@/components/profile/ProfileContainer";
+import { useAppSelector, wrapper } from "@/store";
+import { changeAvatar } from "@/store/userFeature";
+import { MiddlewareRunner } from "@/util/middleware";
+import { authorizedOnlyMiddleware } from "@/util/middleware/authMiddleware";
 import { NextPage } from "next";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Navbar } from "../components/navbar";
-import ProfileContainer from "../components/profile/ProfileContainer";
-import { useAppSelector, wrapper } from "../store";
-import { changeAvatar } from "../store/userFeature";
-import { MiddlewareRunner } from "../util/middleware";
-import { authorizedOnlyMiddleware } from "../util/middleware/authMiddleware";
 
 const Profile: NextPage = () => {
   const dispatch = useDispatch();

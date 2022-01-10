@@ -1,5 +1,5 @@
+import { useAppSelector } from "@/store";
 import { RefObject, useEffect } from "react";
-import { useAppSelector } from "../store";
 
 // Create a hook that fires when clicked outside of the element
 export const useClickOutside = (
