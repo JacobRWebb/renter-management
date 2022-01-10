@@ -26,8 +26,17 @@ const Avatar: FunctionComponent<{ userId?: string }> = ({ userId }) => {
   }, [userId]);
 
   return (
-    <div className={clsx(loading && "animate-pulse")}>
-      <Image draggable={false} src={avatar} layout="fill" alt="avatar" />
+    <div className={clsx("relative h-full w-full")}>
+      {loading ? (
+        <div
+          className={clsx(
+            "bg-gray-400 h-full w-full",
+            loading && "animate-pulse"
+          )}
+        ></div>
+      ) : (
+        <Image draggable={false} src={avatar} layout="fill" alt="avatar" />
+      )}
     </div>
   );
 };

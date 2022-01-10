@@ -2,13 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
 import React, { Fragment, FunctionComponent } from "react";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { useUser } from "../../util/hooks";
 import Avatar from "../Avatar";
-import Dropdown from "../common/Dropdown";
-import DropdownItem from "../common/DropdownItem";
-import NavAvatar from "./NavAvatar";
-import NavItem from "./NavItem";
 import NavLogo from "./NavLogo";
+import NavUserSection from "./NavUserSection";
 
 const Navbar: FunctionComponent = () => {
   const router = useRouter();
@@ -21,38 +19,14 @@ const Navbar: FunctionComponent = () => {
     >
       <div className="flex flex-row justify-between items-center px-4 py-1 w-full max-w-7xl">
         <NavLogo />
-        {user !== null ? (
-          <>
-            <Popover.Button className="flex items-center justify-center sm:hidden w-8 h-8 bg-white rounded-md text-gray-200 hover:text-gray-400 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-              <span className="sr-only">Open Menu</span>
-              <FontAwesomeIcon icon={"bars"} />
-            </Popover.Button>
-            <div className="hidden flex-row items-center justify-center space-x-4 text-custom-blue sm:flex">
-              <NavItem displayName="Dashboard" to="/dashboard" />
-              <FontAwesomeIcon icon={"bell"} />
-              <Dropdown
-                displayNode={
-                  <div className="flex flex-row items-center justify-center space-x-2 bg-gray-200 p-1 rounded-md">
-                    <NavAvatar user={user} />
-                    <p className="font-medium">{`${user.name.firstName} ${user.name.lastName}`}</p>
-                    <FontAwesomeIcon icon={"chevron-down"} />
-                  </div>
-                }
-              >
-                <DropdownItem displayName="Logout" to="/logout" />
-              </Dropdown>
-            </div>
-          </>
-        ) : (
-          <button
-            className="bg-green-700 text-white font-medium py-1 px-2 rounded-md"
-            onClick={() => {
-              router.push("/signin");
-            }}
-          >
-            Sign In
-          </button>
-        )}
+        <div className="hidden flex-row sm:flex items-center space-x-4">
+          {/* Nav Items */}
+          <NavUserSection user={user} />
+        </div>
+        <Popover.Button className="flex sm:hidden">
+          <span className="sr-only">Open Navbar</span>
+          <GiHamburgerMenu />
+        </Popover.Button>
       </div>
       <Transition
         as={Fragment}
