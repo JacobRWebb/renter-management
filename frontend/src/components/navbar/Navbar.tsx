@@ -6,6 +6,7 @@ import { useUser } from "../../util/hooks";
 import Avatar from "../Avatar";
 import Dropdown from "../common/Dropdown";
 import DropdownItem from "../common/DropdownItem";
+import NavAvatar from "./NavAvatar";
 import NavItem from "./NavItem";
 import NavLogo from "./NavLogo";
 
@@ -32,7 +33,7 @@ const Navbar: FunctionComponent = () => {
               <Dropdown
                 displayNode={
                   <div className="flex flex-row items-center justify-center space-x-2 bg-gray-200 p-1 rounded-md">
-                    <Avatar userId={user.id} />
+                    <NavAvatar user={user} />
                     <p className="font-medium">{`${user.name.firstName} ${user.name.lastName}`}</p>
                     <FontAwesomeIcon icon={"chevron-down"} />
                   </div>

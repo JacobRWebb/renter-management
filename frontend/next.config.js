@@ -15,6 +15,6 @@ module.exports = {
     ],
   },
   images: {
-    domains: ["localhost", "placehold.it"],
+    domains: ["localhost", "placehold.it", "res.cloudinary.com"],
   },
 };

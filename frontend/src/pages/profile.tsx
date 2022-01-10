@@ -1,7 +1,6 @@
 import { NextPage } from "next";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import Avatar from "../components/Avatar";
 import { Navbar } from "../components/navbar";
 import ProfileContainer from "../components/profile/ProfileContainer";
 import { useAppSelector, wrapper } from "../store";
@@ -37,7 +36,7 @@ const Profile: NextPage = () => {
           <form onSubmit={submit}>
             <h1>Change Profile Picture</h1>
             <div className="flex flex-row bg-white items-center justify-between">
-              <Avatar userId={state.userState.user.id} />
+              {/* <Avatar userId={state.userState.user.id} /> */}
               <input
                 className="w-72"
                 type="file"
