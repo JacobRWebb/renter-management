@@ -1,54 +1,49 @@
 import { PrismaClient, Role } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { findOrCreateStripeAccount } from "../controllers/stripeController";
-import { dropbox, memcached } from "../util/constants";
+import streamifier from "streamifier";
+import { cloudinary } from "../util/constants";
+import {
+  stripeFindOrCreateCustomer,
+  stripeFindOrCreateManagerAccount,
+} from "./stripeController";
 
 const prisma = new PrismaClient();
 
-const cacheUserAvatar = async (userId: string, buffer: Buffer) => {
-  await memcached.set(`${userId}-avatar`, buffer, { expires: 60 });
-};
-
-export const getUserAvatar = async (userId: string) => {
-  try {
-    const dropboxCall = await dropbox.filesDownload({
-      path: `/avatars/${userId}.png`,
-    });
-
-    if (dropboxCall.result) {
-      const { fileBinary } = dropboxCall.result as any;
-      await cacheUserAvatar(userId, fileBinary);
-      return fileBinary as Buffer;
-    } else {
-      throw new Error("Not found");
-    }
-  } catch (error) {
-    const dropboxCall = await dropbox.filesDownload({
-      path: `/avatars/avatar.png`,
-    });
-    if (dropboxCall.result) {
-      const { fileBinary } = dropboxCall.result as any;
-      await cacheUserAvatar(userId, fileBinary);
-      return fileBinary as Buffer;
-    } else {
-      throw new Error("Image Missing");
-    }
-  }
-};
-
-export const updateUserAvatar = async (userId: string, buffer: Buffer) => {
-  await dropbox.filesUpload({
-    contents: buffer,
-    mode: {
-      ".tag": "overwrite",
+export const getUserAvatar = async (userId: string): Promise<string> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
     },
-    path: `/avatars/${userId}.png`,
+    select: {
+      avatarLink: true,
+    },
   });
-  await cacheUserAvatar(userId, buffer);
+
+  if (user === null) {
+    // FEATURE: Possibly return a default avatar
+    throw new Error("User not found");
+  }
+
+  return user.avatarLink;
 };
 
-// Util
+export const updateUserAvatar = async (
+  userId: string,
+  file: Express.Multer.File | undefined
+) => {
+  if (file === undefined) {
+    throw new Error("No file");
+  }
+
+  const avatarStream = await cloudinary.uploader.upload_stream({
+    folder: "avatars",
+    public_id: userId,
+    overwrite: true,
+  });
+
+  streamifier.createReadStream(file.buffer).pipe(avatarStream);
+};
 
 //  Login
 export const login = async ({
@@ -88,6 +83,40 @@ export const login = async ({
 };
 
 // Register
+export const registerManager = async (
+  email: string,
+  nameInput: { firstName: string; middleInitial: string; lastName: string },
+  password: string,
+  roles: Role[] = ["MANAGER"]
+) => {
+  const user = await getUserByEmail(email);
+  if (user) {
+    return;
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+  const name = await findOrCreateName(email, nameInput);
+  const stripeAccount = await stripeFindOrCreateManagerAccount(email);
+
+  await prisma.user.create({
+    data: {
+      email,
+      password: hashedPassword,
+      roles,
+      stripe: {
+        connect: {
+          id: stripeAccount.id,
+        },
+      },
+      name: {
+        connect: {
+          id: name.id,
+        },
+      },
+    },
+  });
+};
+
 export const registerUser = async (
   email: string,
   nameInput: { firstName: string; middleInitial: string; lastName: string },
@@ -101,7 +130,7 @@ export const registerUser = async (
 
   const hashedPassword = await bcrypt.hash(password, 12);
   const name = await findOrCreateName(email, nameInput);
-  const stripeAccount = await findOrCreateStripeAccount(email);
+  const stripeAccount = await stripeFindOrCreateCustomer(email, name);
 
   await prisma.user.create({
     data: {

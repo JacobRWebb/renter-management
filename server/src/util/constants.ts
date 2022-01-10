@@ -1,4 +1,4 @@
-import { Dropbox } from "dropbox";
+import Cloudinary from "cloudinary";
 import { Client } from "memjs";
 import Multer from "multer";
 import Stripe from "stripe";
@@ -12,7 +12,13 @@ export const stripe: Stripe = require("stripe")(
 );
 
 export const memcached = Client.create();
-export const dropbox = new Dropbox({
-  accessToken: process.env.DROPBOX_TOKEN,
+export const multer = Multer({});
+
+export const cloudinary = Cloudinary.v2;
+
+cloudinary.config({
+  cloud_name: "xodius",
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
 });
-export const multer = Multer();

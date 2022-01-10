@@ -1,4 +1,4 @@
-import { registerUser } from "../controllers/userController";
+import { registerManager, registerUser } from "../controllers/userController";
 
 export const seedUser = async () => {
   let email = "admin@xodius.io";
@@ -8,14 +8,23 @@ export const seedUser = async () => {
     lastName: "Webb",
   };
   let password = "password";
-  await registerUser(email, name, password, ["TENANT", "MANAGER", "ADMIN"]);
+  registerManager(email, name, password, ["ADMIN"]);
 
-  email = "test@gmail.com";
+  email = "propertyOwner@gmail.com";
   name = {
     firstName: "Test",
     middleInitial: "T",
-    lastName: "User",
+    lastName: "Owner",
   };
   password = "password";
-  await registerUser(email, name, password);
+  registerManager(email, name, password);
+
+  email = "testCustomer@gmail.com";
+  name = {
+    firstName: "Customer",
+    middleInitial: "T",
+    lastName: "Customer",
+  };
+  password = "password";
+  registerUser(email, name, password);
 };

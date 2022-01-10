@@ -5,6 +5,7 @@ import {
   validateMiddleware,
 } from "../../middleware/formMiddleware";
 import { DOMAIN } from "../../util/constants";
+
 const router = Router();
 
 router.post(

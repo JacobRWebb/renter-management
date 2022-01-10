@@ -6,7 +6,7 @@ import userCommonRoutes from "./userCommonRoutes";
 // Route /user
 const router = Router();
 
-router.use(userAvatarRoutes);
+router.use("/avatar", userAvatarRoutes);
 router.use(userAuthRoutes);
 router.use(userCommonRoutes);
 

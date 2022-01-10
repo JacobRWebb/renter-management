@@ -6,6 +6,8 @@ declare namespace NodeJS {
     STRIPE_SECRET_KEY: string;
     STRIPE_PUBLIC_KEY: string;
     STRIPE_WEBHOOK_SECRET: string;
-    DROPBOX_TOKEN: string;
+    CLOUDINARY_URL: string;
+    CLOUDINARY_API_KEY: string;
+    CLOUDINARY_API_SECRET: string;
   }
 }
