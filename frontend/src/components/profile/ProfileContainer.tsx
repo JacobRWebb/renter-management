@@ -1,6 +1,6 @@
 import { User } from "@/store/userFeature";
 import { FunctionComponent } from "react";
-import Avatar from "../Avatar";
+import Avatar from "../common/Avatar";
 
 const ProfileContainer: FunctionComponent<{ user: User | null }> = ({
   user,

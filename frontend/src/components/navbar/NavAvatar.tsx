@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { User } from "../../store/userFeature";
-import Avatar from "../Avatar";
+import Avatar from "../common/Avatar";
 
 const NavAvatar: FunctionComponent<{ user: User }> = ({ user }) => {
   return (

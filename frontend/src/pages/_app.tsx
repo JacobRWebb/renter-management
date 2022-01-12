@@ -1,4 +1,4 @@
-import Background from "@/components/Background";
+import { Background } from "@/components";
 import { wrapper } from "@/store";
 import "@/styles/index.scss";
 import { library } from "@fortawesome/fontawesome-svg-core";
