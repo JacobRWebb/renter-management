@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components";
 import { wrapper } from "@/store";
 import { MiddlewareRunner } from "@/util/middleware";
 import { unAuthorizedOnlyMiddleware } from "@/util/middleware/authMiddleware";

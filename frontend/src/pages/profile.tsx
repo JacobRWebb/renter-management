@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components";
 import ProfileContainer from "@/components/profile/ProfileContainer";
 import { useAppSelector, wrapper } from "@/store";
 import { changeAvatar } from "@/store/userFeature";

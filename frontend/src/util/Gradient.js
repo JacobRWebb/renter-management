@@ -6,14 +6,6 @@ function normalizeColor(hexCode) {
   ];
 }
 
-["SCREEN", "LINEAR_LIGHT"].reduce(
-  (hexCode, t, n) =>
-    Object.assign(hexCode, {
-      [t]: n,
-    }),
-  {}
-);
-
 class MiniGl {
   constructor(canvas, width, height, debug = false) {
     const _miniGl = this,
@@ -518,7 +510,6 @@ class Gradient {
       e(this, "activeColors", [1, 1, 1, 1]),
       e(this, "isMetaKey", !1),
       e(this, "isGradientLegendVisible", !1),
-      e(this, "isMouseDown", !1),
       e(this, "handleScroll", () => {
         clearTimeout(this.scrollingTimeout),
           (this.scrollingTimeout = setTimeout(
@@ -542,21 +533,10 @@ class Gradient {
           (this.mesh.material.uniforms.u_shadow_power.value =
             this.width < 600 ? 5 : 6);
       }),
-      e(this, "handleMouseDown", (e) => {
-        this.isGradientLegendVisible &&
-          ((this.isMetaKey = e.metaKey),
-          (this.isMouseDown = !0),
-          !1 === this.conf.playing && requestAnimationFrame(this.animate));
-      }),
-      e(this, "handleMouseUp", () => {
-        this.isMouseDown = !1;
-      }),
       e(this, "animate", (e) => {
-        if (!this.shouldSkipFrame(e) || this.isMouseDown) {
+        if (!this.shouldSkipFrame(e)) {
           if (
-            ((this.t += Math.min(e - this.last, 1e3 / 15)),
-            (this.last = e),
-            this.isMouseDown)
+            ((this.t += Math.min(e - this.last, 1e3 / 15)), (this.last = e), 0)
           ) {
             let e = 160;
             this.isMetaKey && (e = -160), (this.t += e);
@@ -564,10 +544,9 @@ class Gradient {
           (this.mesh.material.uniforms.u_time.value = this.t),
             this.minigl.render();
         }
-        if (0 !== this.last && this.isStatic)
-          return this.minigl.render(), void this.disconnect();
-        /*this.isIntersecting && */ (this.conf.playing || this.isMouseDown) &&
+        if (this.conf.playing) {
           requestAnimationFrame(this.animate);
+        }
       }),
       e(this, "addIsLoadedClass", () => {
         /*this.isIntersecting && */ !this.isLoadedClass &&
@@ -755,21 +734,7 @@ class Gradient {
       void 0
     );
   }
-  updateFrequency(e) {
-    (this.freqX += e), (this.freqY += e);
-  }
-  toggleColor(index) {
-    this.activeColors[index] = 0 === this.activeColors[index] ? 1 : 0;
-  }
-  showGradientLegend() {
-    this.width > this.minWidth &&
-      ((this.isGradientLegendVisible = !0),
-      document.body.classList.add("isGradientLegendVisible"));
-  }
-  hideGradientLegend() {
-    (this.isGradientLegendVisible = !1),
-      document.body.classList.remove("isGradientLegendVisible");
-  }
+
   init() {
     this.initGradientColors(),
       this.initMesh(),

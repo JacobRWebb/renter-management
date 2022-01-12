@@ -1,7 +1,7 @@
+import { Navbar } from "@/components";
 import ModuleTransition from "@/components/dashboard/ModuleTransition";
 import PayDashModule from "@/components/dashboard/PayDashModule";
 import YearlyExpenditureChart from "@/components/dashboard/YearlyExpenditureChart";
-import { Navbar } from "@/components/navbar";
 import { wrapper } from "@/store";
 import { MiddlewareRunner } from "@/util/middleware";
 import { authorizedOnlyMiddleware } from "@/util/middleware/authMiddleware";
