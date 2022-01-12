@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
 import React, { Fragment, FunctionComponent } from "react";
+import { AiOutlineClose } from "react-icons/ai";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useUser } from "../../util/hooks";
-import Avatar from "../Avatar";
 import NavLogo from "./NavLogo";
 import NavUserSection from "./NavUserSection";
 
@@ -39,18 +38,18 @@ const Navbar: FunctionComponent = () => {
       >
         <Popover.Panel
           focus
-          className="absolute flex flex-col justify-start top-0 inset-x-0 transform origin-top-right w-full p-5 sm:hidden"
+          as="div"
+          className="absolute flex sm:hidden top-0 inset-x-0 origin-top-right w-full"
         >
-          <div className="flex flex-col bg-white p-5 rounded-lg shadow-lg">
-            {user !== null ? (
-              <div className="flex flex-row items-center justify-between">
-                <Avatar userId={user.id} />
-                <Popover.Button className="flex items-center justify-center sm:hidden w-8 h-8 bg-white rounded-md text-gray-200 hover:text-gray-400 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                  <span className="sr-only">Open Menu</span>
-                  <FontAwesomeIcon icon={"times"} />
-                </Popover.Button>
-              </div>
-            ) : null}
+          <div className="flex flex-col w-full m-4 p-2 bg-white rounded shadow-2xl border-2 border-gray-500 border-opacity-10">
+            {/* Top Section pop up navbar */}
+            <div className="flex flex-row w-full items-center justify-between">
+              <NavUserSection user={user} />
+              <Popover.Button className="flex items-center self-start justify-center sm:hidden w-8 h-8 bg-white rounded-md text-gray-200 hover:text-gray-400 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                <span className="sr-only">Open Menu</span>
+                <AiOutlineClose className="text-2xl text-black" />
+              </Popover.Button>
+            </div>
           </div>
         </Popover.Panel>
       </Transition>
