@@ -4,6 +4,7 @@ import {
   updateUserAvatar,
 } from "../../controllers/userController";
 import { authorizedAsync } from "../../middleware";
+import { avatarCache } from "../../middleware/cacheMiddleware";
 import { multer } from "../../util/constants";
 
 // Route /user
@@ -24,16 +25,18 @@ router.post("/", authorizedAsync, multer.single("avatar"), async (req, res) => {
 });
 
 // TODO: Cache Response
-router.get("/:userId", async (req, res) => {
+router.get("/:userId", avatarCache, async (req, res) => {
   getUserAvatar(req.params.userId)
-    .then((response) => {
-      return res.status(200).json({
-        avatarLink: response,
+    .then((data) => {
+      res.json({
+        avatarLink: data,
       });
     })
-    .catch((error) => {
+    .catch((err) => {
       return res.status(500).json({
-        error: error.message,
+        errors: {
+          system: err.message,
+        },
       });
     });
 });

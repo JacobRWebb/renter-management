@@ -3,11 +3,20 @@ import ModuleTransition from "@/components/dashboard/ModuleTransition";
 import PayDashModule from "@/components/dashboard/PayDashModule";
 import YearlyExpenditureChart from "@/components/dashboard/YearlyExpenditureChart";
 import { wrapper } from "@/store";
-import { MiddlewareRunner } from "@/util/middleware";
+import { Middleware, MiddlewareRunner } from "@/util/middleware";
 import { authorizedOnlyMiddleware } from "@/util/middleware/authMiddleware";
-import { isBannedMiddleware } from "@/util/middleware/miscMiddleware";
+import {
+  isBannedMiddleware,
+  isVerified,
+} from "@/util/middleware/miscMiddleware";
 import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
+
+const middlewareStack: Middleware[] = [
+  authorizedOnlyMiddleware,
+  isBannedMiddleware,
+  isVerified,
+];
 
 const Dashboard: NextPage<{ test: boolean }> = ({}) => {
   const [loaded, setLoaded] = useState(false);
@@ -47,7 +56,7 @@ const Dashboard: NextPage<{ test: boolean }> = ({}) => {
 export const getServerSideProps = wrapper.getServerSideProps((store) => {
   return async (ctx) => {
     const middlewareRunner = new MiddlewareRunner(store, ctx);
-    middlewareRunner.build([authorizedOnlyMiddleware, isBannedMiddleware]);
+    middlewareRunner.build(middlewareStack);
     const res = await middlewareRunner.run();
 
     return res;

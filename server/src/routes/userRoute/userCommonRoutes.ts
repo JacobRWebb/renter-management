@@ -1,11 +1,24 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
+import { resendToken, verifyToken } from "../../controllers/userController";
 import { authorizedAsync } from "../../middleware";
 const router = Router();
 
-router.get("/isBanned:userId", async (_req: Request, res: Response) => {
+router.post("/verify", authorizedAsync, async (_req, res) => {
+  resendToken(res.locals.user);
   return res.json({
-    banned: false,
+    success: true,
   });
+});
+
+router.post(`/verify/:token`, authorizedAsync, async (req, res) => {
+  verifyToken(res.locals.user, req.params.token)
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  return res.json({});
 });
 
 router.post("/preFetchUser", authorizedAsync, async (_req, res) => {

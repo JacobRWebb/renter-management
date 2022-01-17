@@ -24,18 +24,21 @@ enum RESIDENTIAL_TYPE {
 }
 
 model User {
-  id         String     @id @default(cuid())
-  email      String     @unique
-  password   String
-  avatarLink String     @default("https://res.cloudinary.com/xodius/image/upload/v1641802390/placeholder/Avatar-Placeholder.png")
-  name       Name       @relation(fields: [nameId], references: [id])
-  nameId     String     @unique
-  roles      Role[]
-  property   Property[]
-  stripe     Stripe     @relation(fields: [stripeId], references: [id])
-  stripeId   String     @unique
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id          String     @id @default(cuid())
+  email       String     @unique
+  password    String
+  avatarLink  String     @default("https://res.cloudinary.com/xodius/image/upload/v1641802390/placeholder/Avatar-Placeholder.png")
+  name        Name       @relation(fields: [nameId], references: [id])
+  nameId      String     @unique
+  roles       Role[]
+  property    Property[]
+  stripe      Stripe     @relation(fields: [stripeId], references: [id])
+  stripeId    String     @unique
+  verified    Boolean    @default(false)
+  verifyToken String     @default(cuid())
+  banned      Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model Stripe {

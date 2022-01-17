@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from "@prisma/client";
+import { PrismaClient, Role, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import streamifier from "streamifier";
@@ -10,40 +10,89 @@ import {
 
 const prisma = new PrismaClient();
 
-export const getUserAvatar = async (userId: string): Promise<string> => {
-  const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      avatarLink: true,
-    },
+export const getUserAvatar = (userId: string) =>
+  new Promise<string>((resolve, reject) => {
+    prisma.user
+      .findUnique({
+        where: {
+          id: userId,
+        },
+      })
+      .then((user) => {
+        if (user === null) {
+          reject("User not found");
+        } else {
+          resolve(user.avatarLink);
+        }
+      })
+      .catch((err) => {
+        reject(err.message);
+      });
   });
 
-  if (user === null) {
-    // FEATURE: Possibly return a default avatar
-    throw new Error("User not found");
-  }
-
-  return user.avatarLink;
-};
-
-export const updateUserAvatar = async (
-  userId: string,
+export const updateUserAvatar = (
+  userId: string | null,
   file: Express.Multer.File | undefined
-) => {
-  if (file === undefined) {
-    throw new Error("No file");
-  }
+) =>
+  new Promise<void>((resolve, reject) => {
+    if (userId === null) {
+      reject("User not found");
+      return;
+    }
+    if (file === undefined) {
+      reject("No File");
+      return;
+    }
 
-  const avatarStream = await cloudinary.uploader.upload_stream({
-    folder: "avatars",
-    public_id: userId,
-    overwrite: true,
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: "avatars",
+        public_id: userId,
+        overwrite: true,
+      },
+      async (err, result) => {
+        if (result === undefined) {
+          reject("Error uploading file");
+          return;
+        }
+        if (err) {
+          reject(err.message);
+          return;
+        } else {
+          console.log(result);
+          await prisma.user.update({
+            where: {
+              id: userId,
+            },
+            data: {
+              avatarLink: result.secure_url,
+            },
+          });
+
+          resolve();
+        }
+      }
+    );
+    streamifier.createReadStream(file.buffer).pipe(stream);
+    resolve();
   });
 
-  streamifier.createReadStream(file.buffer).pipe(avatarStream);
-};
+// export const updateUserAvatard = async (
+//   userId: string,
+//   file: Express.Multer.File | undefined
+// ) => {
+//   if (file === undefined) {
+//     throw new Error("No file");
+//   }
+
+//   const avatarStream = await cloudinary.uploader.upload_stream({
+//     folder: "avatars",
+//     public_id: userId,
+//     overwrite: true,
+//   });
+
+//   streamifier.createReadStream(file.buffer).pipe(avatarStream);
+// };
 
 //  Login
 export const login = async ({
@@ -186,4 +235,30 @@ const findOrCreateName = async (
   }
 
   return name;
+};
+
+export const verifyToken = async (user: User | null, token: string | null) => {
+  if (user === null) throw new Error("User not found");
+  if (token === null) throw new Error("Token not found");
+
+  if (user.verified) throw new Error("User already verified");
+
+  if (user.verifyToken !== token) throw new Error("Invalid token");
+
+  if (user.verifyToken === token) {
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        verified: true,
+      },
+    });
+  }
+};
+
+export const resendToken = async (user: User | null) => {
+  if (user === null) throw new Error("User not found");
+
+  // TODO send email with token
 };

@@ -19,6 +19,8 @@ export interface User {
     change: false;
     pending: boolean;
   };
+  verified: boolean;
+  banned: boolean;
   createdAt: string;
   updatedAt: string;
 }

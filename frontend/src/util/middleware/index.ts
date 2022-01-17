@@ -19,8 +19,7 @@ export class MiddlewareRunner {
 
   constructor(
     store: AppStore,
-    ctx: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>,
-    props: any = {}
+    ctx: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
   ) {
     this.store = store;
     this.ctx = ctx;
